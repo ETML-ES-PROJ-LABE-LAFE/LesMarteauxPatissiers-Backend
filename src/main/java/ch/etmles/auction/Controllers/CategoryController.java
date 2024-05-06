@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = "localhost:8081")
+@CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping("/categories")
 public class CategoryController {
 
