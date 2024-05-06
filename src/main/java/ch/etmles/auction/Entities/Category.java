@@ -7,7 +7,8 @@ public enum Category {
     VEHICLES("Véhicule"),
     BIJOUX("Bijoux"),
     ELECTRONIQUE("Electronique"),
-    LIVRE("Livre");
+    LIVRE("Livre"),
+    AUTRE("Autres");
 
     private final String displayName;
 
