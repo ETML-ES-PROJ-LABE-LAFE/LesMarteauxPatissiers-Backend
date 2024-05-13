@@ -1,7 +1,7 @@
 package ch.etmles.auction.Controllers;
 
 import ch.etmles.auction.Entities.Item;
-import ch.etmles.auction.Entities.Category;
+import ch.etmles.auction.Entities.Categorie;
 import ch.etmles.auction.Repositories.ItemRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/items")
+@CrossOrigin(origins = "http://localhost:8081")
 public class ItemController {
 
     @Autowired
@@ -22,10 +23,12 @@ public class ItemController {
     curl -i localhost:8080/items
     curl -i localhost:8080/items?category=ART
     */
+
+    //todo : gérer la nouvelle logique de catégories : done
     @GetMapping
-    List<Item> getAllItems(@RequestParam(required = false) Category category) {
-        if (category != null) {
-            return itemRepository.findByCategory(category);
+    List<Item> getAllItems(@RequestParam(required = false) Categorie categorie) {
+        if (categorie != null) {
+            return itemRepository.findByCategorie(categorie);
         }
         return itemRepository.findAll();
     }
@@ -75,7 +78,7 @@ public class ItemController {
                     item.setDescription(newItem.getDescription());
                     item.setInitial_price(newItem.getInitial_price());
                     item.setLast_bid(newItem.getLast_bid());
-                    item.setCategory(newItem.getCategory());
+                    item.setCategorie(newItem.getCategorie());
                     return itemRepository.save(item);
                 }).orElseGet(() -> {
                     newItem.setId(id);
