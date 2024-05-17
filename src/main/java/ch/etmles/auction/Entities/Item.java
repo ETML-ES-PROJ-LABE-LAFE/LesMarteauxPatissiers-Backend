@@ -15,6 +15,7 @@ public class Item {
     @Enumerated(EnumType.STRING)
     private Category category ;
 
+    //TODO Remove unused code
     //@Column(nullable = false)
     //private Utilisateur utilisateur ;
 

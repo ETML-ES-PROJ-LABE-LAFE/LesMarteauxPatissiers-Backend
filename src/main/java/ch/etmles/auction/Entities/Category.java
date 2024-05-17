@@ -2,6 +2,7 @@ package ch.etmles.auction.Entities;
 
 public enum Category {
 
+    //TODO remove french content
     ART("Art"),
     MOBILIER("Mobilier"),
     VEHICLES("Véhicule"),
