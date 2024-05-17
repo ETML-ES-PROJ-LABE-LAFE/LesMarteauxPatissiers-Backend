@@ -1,7 +1,7 @@
-package ch.etmles.auction.Controllers;
+package ch.etmles.auction.Exceptions;
 
 public class ItemNotFoundException extends RuntimeException {
-    ItemNotFoundException(Long id) {
+    public ItemNotFoundException(Long id) {
         super("Item n°" + id + " n'existe pas");
     }
 }

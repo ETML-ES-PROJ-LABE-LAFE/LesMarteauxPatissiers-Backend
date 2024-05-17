@@ -1,7 +1,7 @@
 package ch.etmles.auction.Controllers;
 
 import ch.etmles.auction.Entities.Item;
-import ch.etmles.auction.Entities.Category;
+import ch.etmles.auction.Exceptions.ItemNotFoundException;
 import ch.etmles.auction.Repositories.ItemRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8081")
-@RequestMapping("/items")
+@RequestMapping("api/items")
 public class ItemController {
 
     @Autowired
@@ -21,13 +20,9 @@ public class ItemController {
 
     /* curl sample :
     curl -i localhost:8080/items
-    curl -i localhost:8080/items?category=ART
     */
     @GetMapping
-    List<Item> getAllItems(@RequestParam(required = false) Category category) {
-        if (category != null) {
-            return itemRepository.findByCategory(category);
-        }
+    List<Item> getAllItems() {
         return itemRepository.findAll();
     }
 
@@ -55,18 +50,6 @@ public class ItemController {
             -H "Content-Type: application/json" ^
             -d "{\"name\": \"Chaise Ancienne\",\"category\": \"ART\", \"description\": \"Une chaise ancienne en bois massif et velour\", \"initial_price\": 150.0, \"last_bid\": 150.0}"
     */
-   //@PutMapping("/{id}")
-   //public ResponseEntity<Item> updateItem(@PathVariable long id, @RequestBody Item newItem) {
-   //    return itemRepository.findById(id).map(item -> {
-   //        item.setName(newItem.getName());
-   //        item.setDescription(newItem.getDescription());
-   //        item.setInitial_price(newItem.getInitial_price());
-   //        item.setLast_bid(newItem.getLast_bid());
-   //        return ResponseEntity.ok(itemRepository.save(item));
-   //    }).orElseThrow(() -> new ItemNotFoundException(id));
-   //}
-
-
     @PutMapping("/{id}")
     public ResponseEntity<Item> updateOrCreateItem(@PathVariable long id, @RequestBody Item newItem) {
         boolean isCreation = !itemRepository.existsById(id);
@@ -74,9 +57,9 @@ public class ItemController {
                 .map(item -> {
                     item.setName(newItem.getName());
                     item.setDescription(newItem.getDescription());
-                    item.setInitial_price(newItem.getInitial_price());
-                    item.setLast_bid(newItem.getLast_bid());
-                    item.setCategory(newItem.getCategory());
+                    item.setInitialPrice(newItem.getInitialPrice());
+                    item.setLastBid(newItem.getLastBid());
+                    item.setCategorie(newItem.getCategorie());
                     return itemRepository.save(item);
                 }).orElseGet(() -> {
                     newItem.setId(id);
