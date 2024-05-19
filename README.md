@@ -1,38 +1,109 @@
-# Exam
+# Auction Back-End Application
 
-This repository has been created to assess students' skills on Spring.
+This is a Spring Boot-based Auction Application. The application allows users to manage auction items, categories, and subcategories. It also includes CRUD operations for these entities.
 
-## First build
+## Features
 
-After cloning this repository, run this command:
+- Manage auction items
+- Manage categories and subcategories
+- Basic CRUD operations
+- CORS configuration for frontend integration
+- Exception handling for robust API
 
+## Technologies Used
+
+- Java 17
+- Spring Boot 3.2.4
+- Spring Data JPA
+- Hibernate
+- H2 Database (for development)
+- Maven
+- Lombok (optional for reducing boilerplate code)
+
+## Getting Started
+
+### Prerequisites
+
+- Java 17 or higher
+- Maven 3.6.0 or higher
+- IDE of your choice (IntelliJ IDEA recommended)
+
+### Installation
+
+1. Clone the repository
+    ```bash
+    git clone https://github.com/ETML-ES-PROJ-LABE-LAFE/LesMarteauxPatissiers-Backend.git
+    cd LesMarteauxPatissiers-Backend
+    ```
+
+2. Build the project using Maven
+    ```bash
+    mvn clean install
+    ```
+
+3. Run the application
+    ```bash
+    mvn spring-boot:run
+    ```
+
+The application will start on `http://localhost:8080`.
+
+### API Endpoints
+
+Click [HERE](https://github.com/ETML-ES-PROJ-LABE-LAFE/LesMarteauxPatissiers-Backend/wiki/API-END-POINTS) to see the end points 
+
+### CORS Configuration
+
+The application is configured to allow CORS requests from `http://localhost:8081`. You can modify this in the `CorsConfig` class or by using the `@CrossOrigin` annotation in your controllers.
+
+### Exception Handling
+
+Global exception handling is provided using `@ControllerAdvice` and custom exception classes to handle not found and other exceptions gracefully.
+
+### Database
+
+The application uses H2 in-memory database for development. The database schema is automatically created on startup.
+
+### Running Tests
+
+To run tests, use the following command:
+```bash
+    mvn test
 ```
-   mvn clean spring-boot:run
+
+### Contributing
+
+We welcome contributions to improve this project! If you would like to contribute, please follow these steps :
+
+1. Fork the repository: Click the "Fork" button on the top right of the repository page.
+
+2. Clone your fork :
+```bash
+    git clone https://github.com/{yourfork}
+    cd {yourforkRepository}
 ```
 
-to retrieve the dependencies, compile and run the program for the first time.
-
-```
-  [...]
-  2024-04-09T21:27:27.338+02:00  INFO 21340 --- [payroll] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-  2024-04-09T21:27:27.517+02:00  WARN 21340 --- [payroll] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be per
-  formed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-  2024-04-09T21:27:27.752+02:00  INFO 21340 --- [payroll] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
-  2024-04-09T21:27:27.760+02:00  INFO 21340 --- [payroll] [           main] ch.etmles.payroll.PayrollApplication     : Started PayrollApplication in 2.972 seconds (process running for 3.247)
-  2024-04-09T21:27:27.802+02:00  INFO 21340 --- [payroll] [           main] c.e.payroll.Repositories.LoadDatabase    : Preloading Employee{id=1, name='Bilbo Baggins', role='burglar'}
-  2024-04-09T21:27:27.803+02:00  INFO 21340 --- [payroll] [           main] c.e.payroll.Repositories.LoadDatabase    : Preloading Employee{id=2, name='Frodo Baggins', role='thief'}
-  [...]
+3. Create a new Branch
+```bash
+    git checkout -b feature-branch
 ```
 
-## Test using http requests
+4. Make your changes : Add your new features or bug fixes.
 
-Got the file [project]\src\main\java\ch\etmles\payroll\Controllers\EmployeeController.java
+5. Commit your changes : 
+```bash
+    git commit -m 'Add some feature'
+```
 
-Before all routes methods, you will find a curl sample.
+6. Push to your branch :
+```bash
+    git push origin feature-branch
+```
 
-## Backlog
+7. Open a Pull Request : Go to the original repository, click on "Pull Requests" and submit your changes for review.
 
-Read the different issues.
 
-[Issues](https://github.com/ETML-ES-FWBE/exam/issues)
+Please ensure your code adheres to our coding standards and includes appropriate tests.
+
+
 
