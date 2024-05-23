@@ -63,10 +63,6 @@ public class Category {
         return subCategories;
     }
 
-    public void setSubCategories(List<Category> subCategories) {
-        this.subCategories = subCategories;
-    }
-
     // Utility methods to maintain bidirectional relationships
     public void addSubCategory(Category subCategory) {
         subCategories.add(subCategory);

@@ -15,11 +15,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
         @EntityGraph(attributePaths = "subCategories")
         Optional<Category> findById(Long id);
 
-        Optional<Category> findByName(String name);
-
-        @Query("SELECT c FROM Category c LEFT JOIN FETCH c.subCategories WHERE c.name = :name")
-        Category findByNameWithSubCategories(@Param("name") String name);
-
         @Query("SELECT c FROM Category c LEFT JOIN FETCH c.subCategories")
         List<Category> findAllWithSubCategories();
 }
