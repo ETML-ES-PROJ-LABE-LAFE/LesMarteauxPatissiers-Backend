@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 public class LoadDatabase {
@@ -20,7 +22,6 @@ public class LoadDatabase {
     @Transactional
     CommandLineRunner initDatabase(ItemRepository itemRepository, CategoryRepository categoryRepository) {
         return args -> {
-
             // Creating and saving parent categories
             Category electronics = new Category("Electronics");
             Category furniture = new Category("Furniture");
@@ -44,12 +45,17 @@ public class LoadDatabase {
             createAndSaveSubCategories(categoryRepository, artAntiques, "Paintings", "Sculptures", "Antique Furniture", "Collectibles", "Photography");
             createAndSaveSubCategories(categoryRepository, sportsLeisure, "Sport Equipment", "Sport Clothing", "Camping Gear", "Toys", "Fishing Gear");
 
-            // Example items
-            Category tableCat = categoryRepository.findByName("Tables").orElseThrow();
-            Category paintingCat = categoryRepository.findByName("Paintings").orElseThrow();
+            // Fetching all sub-categories
+            List<Category> subCat = new ArrayList<>();
+            List<Category> cat = categoryRepository.findAllWithSubCategories();
+            for (Category c : cat) {
+                subCat.addAll(c.getSubCategories());
+            }
+            log.info("List of sub-categories: " + subCat);
 
-            log.info("Preloading " + itemRepository.save(new Item("Bureau Ikea", tableCat, "Bureau assis debout pour un max de productivité", BigDecimal.valueOf(12.5))));
-            log.info("Preloading " + itemRepository.save(new Item("La Joconde", paintingCat, "Le fameux tableau de Léonard de Vinci", BigDecimal.valueOf(12522345.5))));
+            // Adding items to the sub-categories
+            addItemsToSubCategories(itemRepository, subCat);
+
         };
     }
 
@@ -61,5 +67,54 @@ public class LoadDatabase {
             log.info("Preloading sub-category: " + subCategoryName + " to parent category: " + parentCategory.getName());
         }
         categoryRepository.save(parentCategory); // Update parent with sub-categories
+    }
+
+    private void addItemsToSubCategories(ItemRepository itemRepository, List<Category> subCat) {
+        itemRepository.save(new Item("Iphone 12", subCat.get(0), "Latest Apple smartphone", BigDecimal.valueOf(999.99)));
+        itemRepository.save(new Item("Iphone 13", subCat.get(0), "Latest Apple smartphone", BigDecimal.valueOf(1099.99)));
+        itemRepository.save(new Item("Iphone 13", subCat.get(0), "Latest Apple smartphone", BigDecimal.valueOf(1299.99)));
+        itemRepository.save(new Item("Iphone 19 Pro Plus", subCat.get(0), "Latest Apple smartphone", BigDecimal.valueOf(2999.99)));
+        itemRepository.save(new Item("MacBook Pro 13' pouces", subCat.get(1), "High-end Apple laptop", BigDecimal.valueOf(1999.99)));
+        itemRepository.save(new Item("MacBook Pro 15' pouces", subCat.get(1), "High-end Apple laptop", BigDecimal.valueOf(2499.99)));
+        itemRepository.save(new Item("MacBook Pro 17' pouces", subCat.get(1), "High-end Apple laptop", BigDecimal.valueOf(2999.99)));
+        itemRepository.save(new Item("Nikon D3500", subCat.get(2), "Entry-level DSLR camera", BigDecimal.valueOf(499.99)));
+        itemRepository.save(new Item("Nikon D6500", subCat.get(2), "Entry-level DSLR camera", BigDecimal.valueOf(499.99)));
+        itemRepository.save(new Item("Samsung TV 55\"", subCat.get(3), "4K UHD Smart TV", BigDecimal.valueOf(799.99)));
+        itemRepository.save(new Item("USB-C Adapter", subCat.get(4), "Multiport adapter", BigDecimal.valueOf(29.99)));
+
+        itemRepository.save(new Item("Ergonomic Chair", subCat.get(5), "Comfortable office chair", BigDecimal.valueOf(149.99)));
+        itemRepository.save(new Item("Wooden Table", subCat.get(6), "Solid wood dining table", BigDecimal.valueOf(299.99)));
+        itemRepository.save(new Item("Leather Sofa", subCat.get(7), "Luxurious leather sofa", BigDecimal.valueOf(899.99)));
+        itemRepository.save(new Item("King Size Bed", subCat.get(8), "Comfortable king size bed", BigDecimal.valueOf(499.99)));
+        itemRepository.save(new Item("Metal Shelf", subCat.get(9), "Durable metal storage shelf", BigDecimal.valueOf(79.99)));
+
+        itemRepository.save(new Item("Men's T-Shirt", subCat.get(10), "Comfortable cotton t-shirt", BigDecimal.valueOf(19.99)));
+        itemRepository.save(new Item("Women's Dress", subCat.get(11), "Elegant evening dress", BigDecimal.valueOf(99.99)));
+        itemRepository.save(new Item("Running Shoes", subCat.get(12), "Lightweight running shoes", BigDecimal.valueOf(59.99)));
+        itemRepository.save(new Item("Gold Necklace", subCat.get(13), "18k gold necklace", BigDecimal.valueOf(499.99)));
+        itemRepository.save(new Item("Leather Handbag", subCat.get(14), "Stylish leather handbag", BigDecimal.valueOf(199.99)));
+
+        itemRepository.save(new Item("Harry Potter Book Set", subCat.get(15), "Complete book set", BigDecimal.valueOf(89.99)));
+        itemRepository.save(new Item("Inception Blu-ray", subCat.get(16), "Science fiction movie", BigDecimal.valueOf(14.99)));
+        itemRepository.save(new Item("Guitar", subCat.get(17), "Acoustic guitar", BigDecimal.valueOf(129.99)));
+        itemRepository.save(new Item("Spider-Man Comics", subCat.get(18), "Marvel comic series", BigDecimal.valueOf(29.99)));
+        itemRepository.save(new Item("National Geographic Magazine", subCat.get(19), "Monthly subscription", BigDecimal.valueOf(19.99)));
+
+        itemRepository.save(new Item("Starry Night Painting", subCat.get(20), "Famous painting by Van Gogh", BigDecimal.valueOf(499.99)));
+        itemRepository.save(new Item("Bronze Sculpture", subCat.get(21), "Abstract bronze sculpture", BigDecimal.valueOf(299.99)));
+        itemRepository.save(new Item("Victorian Chair", subCat.get(22), "Antique Victorian chair", BigDecimal.valueOf(399.99)));
+        itemRepository.save(new Item("Baseball Card Collection", subCat.get(23), "Vintage baseball cards", BigDecimal.valueOf(599.99)));
+        itemRepository.save(new Item("Black and White Photography", subCat.get(24), "Artistic photograph", BigDecimal.valueOf(149.99)));
+
+        itemRepository.save(new Item("Yoga Mat", subCat.get(25), "Non-slip yoga mat", BigDecimal.valueOf(29.99)));
+        itemRepository.save(new Item("Basketball Jersey", subCat.get(26), "Official NBA jersey", BigDecimal.valueOf(89.99)));
+        itemRepository.save(new Item("Camping Tent", subCat.get(27), "4-person camping tent", BigDecimal.valueOf(149.99)));
+        itemRepository.save(new Item("Action Figure", subCat.get(28), "Superhero action figure", BigDecimal.valueOf(39.99)));
+        itemRepository.save(new Item("Fishing Rod", subCat.get(29), "High-quality fishing rod", BigDecimal.valueOf(79.99)));
+
+        // Add more items if necessary to reach a total of 70
+        for (int i = 30; i < 70; i++) {
+            itemRepository.save(new Item("Item " + (i + 1), subCat.get(i % subCat.size()), "Description for item " + (i + 1), BigDecimal.valueOf((i + 1) * 10.0)));
+        }
     }
 }
