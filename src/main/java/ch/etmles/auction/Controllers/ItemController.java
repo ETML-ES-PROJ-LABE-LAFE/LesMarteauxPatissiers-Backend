@@ -1,9 +1,7 @@
 package ch.etmles.auction.Controllers;
 
-import ch.etmles.auction.Entities.Item;
-import ch.etmles.auction.Exceptions.ItemNotFoundException;
-import ch.etmles.auction.Repositories.ItemRepository;
-
+import ch.etmles.auction.DTOs.ItemDTO;
+import ch.etmles.auction.Services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,71 +14,45 @@ import java.util.List;
 public class ItemController {
 
     @Autowired
-    ItemRepository itemRepository;
+    private ItemService itemService;
 
-    /* curl sample :
-    curl -i localhost:8080/items
-    */
     @GetMapping
-    List<Item> getAllItems() {
-        return itemRepository.findAll();
+    public List<ItemDTO> getAllItems() {
+        return itemService.getAllItems();
     }
 
-    /* curl sample :
-    curl -i localhost:8080/items/1
-    */
     @GetMapping("/{id}")
-    Item getItemById(@PathVariable long id) {
-        return itemRepository.findById(id).orElseThrow(()-> new ItemNotFoundException(id));
+    public ResponseEntity<ItemDTO> getItemById(@PathVariable long id) {
+        return ResponseEntity.ok(itemService.getItemById(id));
     }
 
-    /*
-    curl -i -X POST localhost:8080/items ^
-            -H "Content-Type: application/json" ^
-            -d "{\"name\": \"Chaise Moderne\",\"category\": \"MOBILIER\", \"description\": \"Une chaise moderne en métal\", \"initial_price\": 75.0, \"last_bid\": 75.0, \"active\":true}"
-    */
+    /* exemple d'envoi avec curl
+    curl -i -X POST http://localhost:8080/api/items ^
+    -H "Content-Type: application/json" ^
+    -d "{\"name\": \"New Item Name\", \"categoryId\": 1, \"description\": \"Description of the new item\", \"initialPrice\": 150.0, \"lastBid\": 0.0}"
+     */
     @PostMapping
-    public ResponseEntity<Item> createItem(@RequestBody Item item) {
-        Item savedItem = itemRepository.save(item);
+    public ResponseEntity<ItemDTO> createItem(@RequestBody ItemDTO itemDTO) {
+        ItemDTO savedItem = itemService.createItem(itemDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedItem);
     }
 
-    /*
-    curl -i -X PUT localhost:8080/items/3 ^
-            -H "Content-Type: application/json" ^
-            -d "{\"name\": \"Chaise Ancienne\",\"category\": \"ART\", \"description\": \"Une chaise ancienne en bois massif et velour\", \"initial_price\": 150.0, \"last_bid\": 150.0}"
-    */
+    /* exemple d'envoi avec curl
+    curl -i -X PUT http://localhost:8080/api/items/71 ^
+        -H "Content-Type: application/json" ^
+        -d "{\"name\": \"Updated Item Name\", \"categoryId\": 1, \"description\": \"Updated description of the item\", \"initialPrice\": 200.0, \"lastBid\": 250.0}"
+     */
     @PutMapping("/{id}")
-    public ResponseEntity<Item> updateOrCreateItem(@PathVariable long id, @RequestBody Item newItem) {
-        boolean isCreation = !itemRepository.existsById(id);
-        Item savedItem = itemRepository.findById(id)
-                .map(item -> {
-                    item.setName(newItem.getName());
-                    item.setDescription(newItem.getDescription());
-                    item.setInitialPrice(newItem.getInitialPrice());
-                    item.setLastBid(newItem.getLastBid());
-                    item.setCategorie(newItem.getCategorie());
-                    return itemRepository.save(item);
-                }).orElseGet(() -> {
-                    newItem.setId(id);
-                    return itemRepository.save(newItem);
-                });
-        if (isCreation) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedItem); // 201 pour la création
-        } else {
-            return ResponseEntity.ok(savedItem); // 200 pour la mise à jour
-        }
+    public ResponseEntity<ItemDTO> updateOrCreateItem(@PathVariable long id, @RequestBody ItemDTO itemDTO) {
+        boolean exists = itemService.existsById(id);
+        ItemDTO savedItem = itemService.updateOrCreateItem(id, itemDTO);
+        HttpStatus status = exists ? HttpStatus.OK : HttpStatus.CREATED;
+        return ResponseEntity.status(status).body(savedItem);
     }
 
-    /* curl sample :
-    curl -i -X DELETE localhost:8080/items/2
-    */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteItem(@PathVariable long id) {
-        if (!itemRepository.existsById(id)) {
-            throw new ItemNotFoundException(id);
-        }
-        itemRepository.deleteById(id);
+        itemService.deleteItem(id);
         return ResponseEntity.ok().build();
     }
 }

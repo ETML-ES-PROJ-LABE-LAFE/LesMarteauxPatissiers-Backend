@@ -1,91 +1,90 @@
 package ch.etmles.auction.Controllers;
 
+import ch.etmles.auction.DTOs.CategoryDTO;
+import ch.etmles.auction.DTOs.ItemDTO;
 import ch.etmles.auction.Entities.Category;
-import ch.etmles.auction.Exceptions.CategoryNotFoundException;
-import ch.etmles.auction.Repositories.CategoryRepository;
+import ch.etmles.auction.Mappers.CategoryMapper;
+import ch.etmles.auction.Services.CategoryService;
+import ch.etmles.auction.Services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
 
-    // Routes pour les catégories principales
+    @Autowired
+    private ItemService itemService;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
+
+
     @GetMapping
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    public List<CategoryDTO> getAllCategories() {
+        List<Category> categories = categoryService.getAllCategories();
+        return categories.stream().map(categoryMapper::convertToDTO).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new CategoryNotFoundException(id));
-        return ResponseEntity.ok(category);
+    public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Long id) {
+        Category category = categoryService.getCategoryById(id);
+        return ResponseEntity.ok(categoryMapper.convertToDTO(category));
     }
 
     @PostMapping
-    public Category createCategory(@RequestBody Category category) {
-        return categoryRepository.save(category);
+    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO) {
+        Category category = categoryMapper.convertToEntity(categoryDTO);
+        Category savedCategory = categoryService.createCategory(category);
+        return ResponseEntity.ok(categoryMapper.convertToDTO(savedCategory));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category categoryDetails) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new CategoryNotFoundException(id));
-        category.setName(categoryDetails.getName());
-        Category updatedCategory = categoryRepository.save(category);
-        return ResponseEntity.ok(updatedCategory);
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
+        Category categoryDetails = categoryMapper.convertToEntity(categoryDTO);
+        Category updatedCategory = categoryService.updateCategory(id, categoryDetails);
+        return ResponseEntity.ok(categoryMapper.convertToDTO(updatedCategory));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new CategoryNotFoundException(id));
-        categoryRepository.delete(category);
+        categoryService.deleteCategory(id);
         return ResponseEntity.ok().build();
     }
 
-    // Routes pour les sous-catégories
     @GetMapping("/{id}/subcategories")
-    public ResponseEntity<List<Category>> getSubCategories(@PathVariable Long id) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new CategoryNotFoundException(id));
-        return ResponseEntity.ok(category.getSubCategories());
+    public ResponseEntity<List<CategoryDTO>> getSubCategories(@PathVariable Long id) {
+        List<Category> subCategories = categoryService.getSubCategories(id);
+        List<CategoryDTO> subCategoryDTOs = subCategories.stream()
+                .map(categoryMapper::convertToDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(subCategoryDTOs);
     }
 
     @PostMapping("/{id}/subcategories")
-    public ResponseEntity<Category> addSubCategory(@PathVariable Long id, @RequestBody Category subCategory) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new CategoryNotFoundException(id));
-        category.addSubCategory(subCategory);
-        categoryRepository.save(subCategory); // Save the new subcategory
-        categoryRepository.save(category); // Update the parent category
-        return ResponseEntity.ok(subCategory);
-    }
-
-    @GetMapping("/subcategories/{id}")
-    public ResponseEntity<Category> getSubCategoriesById(@PathVariable Long id) {
-        Category subCategory = categoryRepository.findById(id)
-                .orElseThrow(() -> new CategoryNotFoundException(id));
-        return ResponseEntity.ok(subCategory);
+    public ResponseEntity<CategoryDTO> addSubCategory(@PathVariable Long id, @RequestBody CategoryDTO subCategoryDTO) {
+        Category subCategory = categoryMapper.convertToEntity(subCategoryDTO);
+        Category savedSubCategory = categoryService.addSubCategory(id, subCategory);
+        return ResponseEntity.ok(categoryMapper.convertToDTO(savedSubCategory));
     }
 
     @DeleteMapping("/subcategories/{subId}")
     public ResponseEntity<Void> deleteSubCategory(@PathVariable Long subId) {
-        Category subCategory = categoryRepository.findById(subId)
-                .orElseThrow(() -> new CategoryNotFoundException(subId));
-        Category parentCategory = subCategory.getParentCategory();
-        if (parentCategory != null) {
-            parentCategory.removeSubCategory(subCategory);
-            categoryRepository.save(parentCategory); // Update the parent category
-        }
-        categoryRepository.delete(subCategory);
+        categoryService.deleteSubCategory(subId);
         return ResponseEntity.ok().build();
+    }
+
+    //récupération des items par catégorie
+    @GetMapping("/{id}/items")
+    public ResponseEntity<List<ItemDTO>> getItemsByCategoryId(@PathVariable Long id) {
+        List<ItemDTO> items = itemService.getItemsBySubCategoryId(id);
+        return ResponseEntity.ok(items);
     }
 }

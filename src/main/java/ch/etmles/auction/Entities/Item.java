@@ -1,9 +1,11 @@
 package ch.etmles.auction.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 public class Item {
@@ -12,6 +14,9 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idItem")
     private long id;
+
+    @Column(name = "refItem", unique = true, nullable = false)
+    private String reference;
 
     @Column(name = "nameItem", nullable = false)
     private String name;
@@ -24,20 +29,31 @@ public class Item {
     @Column(name = "descriptionItem", nullable = false)
     private String description;
 
-    @Column(name="initialPriceItem",nullable = false)
+    @Column(name = "initialPriceItem", nullable = false)
     private BigDecimal initialPrice;
 
-    @Column(name="lastBidItem")
+    @Column(name = "lastBidItem")
     private BigDecimal lastBid;
 
-    public Item() {}
+    public Item() {
+
+    }
 
     public Item(String name, Category category, String description, BigDecimal initialPrice) {
+        this();
         this.name = name;
         this.category = category;
         this.description = description;
         this.initialPrice = initialPrice;
         this.lastBid = BigDecimal.ZERO;
+    }
+
+    @PrePersist
+    @PreUpdate
+    public void ensureReference() {
+        if (this.reference == null) {
+            this.reference = UUID.randomUUID().toString();
+        }
     }
 
     public long getId() {
@@ -48,6 +64,13 @@ public class Item {
         this.id = id;
     }
 
+    public String getReference() {
+        return reference;
+    }
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
     public String getName() {
         return name;
     }
@@ -56,11 +79,17 @@ public class Item {
         this.name = name;
     }
 
-    public Category getCategorie() {
+    @JsonProperty("category")
+    public Long getCategoryId() {
+        return category.getId();
+    }
+
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategorie(Category category) {
+    // Utiliser un service pour obtenir l'objet Category à partir de l'identifiant
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -91,9 +120,9 @@ public class Item {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Item)) return false;
-        Item item = (Item) o;
+        if (!(o instanceof Item item)) return false;
         return id == item.id &&
+                Objects.equals(reference, item.reference) &&
                 Objects.equals(name, item.name) &&
                 Objects.equals(category, item.category) &&
                 Objects.equals(description, item.description) &&
@@ -103,13 +132,14 @@ public class Item {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, category, description, initialPrice, lastBid);
+        return Objects.hash(id, reference, name, category, description, initialPrice, lastBid);
     }
 
     @Override
     public String toString() {
         return "Item{" +
                 "id=" + id +
+                ", reference='" + reference.substring(0, 8) + '\'' +
                 ", name='" + name + '\'' +
                 ", category=" + category +
                 ", description='" + description + '\'' +

@@ -112,9 +112,11 @@ public class LoadDatabase {
         itemRepository.save(new Item("Action Figure", subCat.get(28), "Superhero action figure", BigDecimal.valueOf(39.99)));
         itemRepository.save(new Item("Fishing Rod", subCat.get(29), "High-quality fishing rod", BigDecimal.valueOf(79.99)));
 
-        // Add more items if necessary to reach a total of 70
-        for (int i = 36; i < 70; i++) {
-            itemRepository.save(new Item("Item " + (i + 1), subCat.get(i % subCat.size()), "Description for item " + (i + 1), BigDecimal.valueOf((i + 1) * 10.0)));
+        log.info(itemRepository.findById(1L).toString());
+
+        int nbItems = itemRepository.findAll().size();
+        for (int i = nbItems; i < 70; i++) {
+            itemRepository.save(new Item("Item " + (i+1), subCat.get(i % subCat.size()), "Description for item " + (i+1), BigDecimal.valueOf((i+1) * 10.0)));
         }
     }
 }

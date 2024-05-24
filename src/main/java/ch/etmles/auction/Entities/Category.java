@@ -16,7 +16,7 @@ public class Category {
     @Column(name = "idCategory")
     private long id;
 
-    @Column(name = "name",nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @ManyToOne
@@ -25,14 +25,13 @@ public class Category {
 
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<Category> subCategories;
+    private List<Category> subCategories = new ArrayList<>();
 
     public Category() {
     }
 
     public Category(String name) {
         this.name = name;
-        this.subCategories = new ArrayList<>();
     }
 
     public long getId() {
@@ -63,7 +62,6 @@ public class Category {
         return subCategories;
     }
 
-    // Utility methods to maintain bidirectional relationships
     public void addSubCategory(Category subCategory) {
         subCategories.add(subCategory);
         subCategory.setParentCategory(this);
@@ -80,14 +78,12 @@ public class Category {
         if (o == null || getClass() != o.getClass()) return false;
         Category category = (Category) o;
         return id == category.id &&
-                Objects.equals(name, category.name) &&
-                Objects.equals(parentCategory, category.parentCategory) &&
-                Objects.equals(subCategories, category.subCategories);
+                Objects.equals(name, category.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, parentCategory, subCategories);
+        return Objects.hash(id, name);
     }
 
     @Override
@@ -95,6 +91,6 @@ public class Category {
         return "Category{" +
                 "idCategory=" + id +
                 ", name='" + name + '\'' +
-        '}';
+                '}';
     }
 }
