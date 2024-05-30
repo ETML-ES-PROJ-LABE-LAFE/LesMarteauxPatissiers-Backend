@@ -49,7 +49,7 @@ public class ItemController {
         HttpStatus status = exists ? HttpStatus.OK : HttpStatus.CREATED;
         return ResponseEntity.status(status).body(savedItem);
     }
-
+    //TODO: test on exception
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteItem(@PathVariable long id) {
         itemService.deleteItem(id);

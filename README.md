@@ -50,7 +50,8 @@ The application will start on `http://localhost:8080`.
 
 ### API Endpoints
 
-Click [HERE](https://github.com/ETML-ES-PROJ-LABE-LAFE/LesMarteauxPatissiers-Backend/wiki/API-END-POINTS) to see the end points 
+If you run the applicationy, you can use swagger to check API Endpoints on the link [HERE](http://localhost:8080/swagger-ui.html)
+Otherwise you can see them [HERE](https://github.com/ETML-ES-PROJ-LABE-LAFE/LesMarteauxPatissiers-Backend/wiki/API-END-POINTS) to see the end points 
 
 ### CORS Configuration
 
