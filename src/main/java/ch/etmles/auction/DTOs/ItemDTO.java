@@ -7,6 +7,7 @@ public class ItemDTO {
     private String reference;
     private String name;
     private long categoryId;
+    private long appUserId;
     private String description;
     private BigDecimal initialPrice;
     private BigDecimal lastBid;
@@ -42,6 +43,13 @@ public class ItemDTO {
 
     public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public long getAppUserId() {
+        return appUserId;
+    }
+    public void setAppUserId(long appUserId) {
+        this.appUserId = appUserId;
     }
 
     public String getDescription() {
