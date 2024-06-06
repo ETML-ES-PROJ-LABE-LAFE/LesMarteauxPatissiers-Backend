@@ -9,6 +9,7 @@ public class ItemDTO {
     private long categoryId;
     private long appUserId;
     private String description;
+    private String imageName;
     private BigDecimal initialPrice;
     private BigDecimal lastBid;
 
@@ -58,6 +59,14 @@ public class ItemDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public String getImageName() {
+        return imageName;
     }
 
     public BigDecimal getInitialPrice() {

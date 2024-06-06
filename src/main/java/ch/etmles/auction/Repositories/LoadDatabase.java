@@ -83,19 +83,19 @@ public class LoadDatabase {
         appUserRepository.save(user);
         appUserRepository.save(user1);
 
-        itemRepository.save(new Item("Iphone 12", subCat.get(0),user, "Latest Apple smartphone", BigDecimal.valueOf(999.99)));
-        itemRepository.save(new Item("Iphone 13", subCat.get(0),user1, "Latest Apple smartphone", BigDecimal.valueOf(1099.99)));
-        itemRepository.save(new Item("Iphone 13", subCat.get(0),user1, "Latest Apple smartphone", BigDecimal.valueOf(1299.99)));
-        itemRepository.save(new Item("Iphone 19 Pro Plus", subCat.get(0),user, "Latest Apple smartphone", BigDecimal.valueOf(2999.99)));
-        itemRepository.save(new Item("MacBook Pro 13' pouces", subCat.get(1),user, "High-end Apple laptop", BigDecimal.valueOf(1999.99)));
-        /*
-        itemRepository.save(new Item("MacBook Pro 15' pouces", subCat.get(1),new AppUser("Jean-Mich","Philippiano",BigDecimal.valueOf(1000)), "High-end Apple laptop", BigDecimal.valueOf(2499.99)));
-        itemRepository.save(new Item("MacBook Pro 17' pouces", subCat.get(1),new AppUser("Jean-Mich","Philippiano",BigDecimal.valueOf(1000)), "High-end Apple laptop", BigDecimal.valueOf(2999.99)));
-        itemRepository.save(new Item("Nikon D3500", subCat.get(2),new AppUser("Jean-Mich","Philippiano",BigDecimal.valueOf(1000)), "Entry-level DSLR camera", BigDecimal.valueOf(499.99)));
-        itemRepository.save(new Item("Nikon D6500", subCat.get(2),new AppUser("Jean-Mich","Philippiano",BigDecimal.valueOf(1000)), "Entry-level DSLR camera", BigDecimal.valueOf(499.99)));
-        itemRepository.save(new Item("Samsung TV 55\"", subCat.get(3),new AppUser("Jean-Mich","Philippiano",BigDecimal.valueOf(1000)), "4K UHD Smart TV", BigDecimal.valueOf(799.99)));
-        itemRepository.save(new Item("USB-C Adapter", subCat.get(4),new AppUser("Jean-Mich","Philippiano",BigDecimal.valueOf(1000)), "Multiport adapter", BigDecimal.valueOf(29.99)));
+        itemRepository.save(new Item("Iphone 12", subCat.get(0),user, "Latest Apple smartphone","Smartphone1.png", BigDecimal.valueOf(999.99)));
+        itemRepository.save(new Item("Iphone 13", subCat.get(0),user1, "Latest Apple smartphone","Smartphone2.png", BigDecimal.valueOf(1099.99)));
+        itemRepository.save(new Item("Iphone 13", subCat.get(0),user1, "Latest Apple smartphone","Smartphone3.png", BigDecimal.valueOf(1299.99)));
+        itemRepository.save(new Item("Iphone 19 Pro Plus", subCat.get(0),user, "Latest Apple smartphone","Smartphone4.png", BigDecimal.valueOf(2999.99)));
+        itemRepository.save(new Item("MacBook Pro 13' pouces", subCat.get(1),user, "High-end Apple laptop","Computer1.png", BigDecimal.valueOf(1999.99)));
 
+        itemRepository.save(new Item("MacBook Pro 15' pouces", subCat.get(1),user1, "High-end Apple laptop","Computer2.png", BigDecimal.valueOf(2499.99)));
+        itemRepository.save(new Item("MacBook Pro 17' pouces", subCat.get(1),user, "High-end Apple laptop","Computer3.png", BigDecimal.valueOf(2999.99)));
+        itemRepository.save(new Item("Nikon D3500", subCat.get(2),user1, "Entry-level DSLR camera","Camera1.png", BigDecimal.valueOf(499.99)));
+        itemRepository.save(new Item("Nikon D6500", subCat.get(2),user, "Entry-level DSLR camera","Camera2.png", BigDecimal.valueOf(499.99)));
+        itemRepository.save(new Item("Samsung TV 55\"", subCat.get(3),user, "4K UHD Smart TV","Television1.png", BigDecimal.valueOf(799.99)));
+        itemRepository.save(new Item("USB-C Adapter", subCat.get(4),user1, "Multiport adapter","USB-C-Adaptater.png", BigDecimal.valueOf(29.99)));
+        /*
         itemRepository.save(new Item("Ergonomic Chair", subCat.get(5),new AppUser("Jean-Mich","Philippiano",BigDecimal.valueOf(1000)), "Comfortable office chair", BigDecimal.valueOf(149.99)));
         itemRepository.save(new Item("Wooden Table", subCat.get(6),new AppUser("Jean-Mich","Philippiano",BigDecimal.valueOf(1000)), "Solid wood dining table", BigDecimal.valueOf(299.99)));
         itemRepository.save(new Item("Leather Sofa", subCat.get(7),new AppUser("Jean-Mich","Philippiano",BigDecimal.valueOf(1000)), "Luxurious leather sofa", BigDecimal.valueOf(899.99)));

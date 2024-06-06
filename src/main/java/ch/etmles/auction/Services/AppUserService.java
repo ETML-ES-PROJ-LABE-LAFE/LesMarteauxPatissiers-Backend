@@ -38,27 +38,5 @@ public class AppUserService {
         return appUserMapper.toDto(user);
     }
 
-    public AppUserDTO updateUser(Long id, AppUserDTO appUserDTO) {
-        Optional<AppUser> userOptional = appUserRepository.findById(id);
-        if (userOptional.isPresent()) {
-            AppUser user = userOptional.get();
-            user.setNom(appUserDTO.getNom());
-            user.setPrenom(appUserDTO.getPrenom());
-            user.setCredit(appUserDTO.getCredit());
-            user = appUserRepository.save(user);
-            return appUserMapper.toDto(user);
-        } else {
-            return null;
-        }
-    }
 
-    public boolean deleteUser(Long id) {
-        Optional<AppUser> userOptional = appUserRepository.findById(id);
-        if (userOptional.isPresent()) {
-            appUserRepository.delete(userOptional.get());
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

@@ -6,8 +6,6 @@ import ch.etmles.auction.Entities.Category;
 import ch.etmles.auction.Entities.Item;
 import ch.etmles.auction.Repositories.AppUserRepository;
 import ch.etmles.auction.Repositories.CategoryRepository;
-import ch.etmles.auction.Services.CategoryService;
-import ch.etmles.auction.Services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +25,7 @@ public class ItemMapper {
         itemDTO.setCategoryId(item.getCategory().getId());
         itemDTO.setAppUserId(item.getAppUser().getId());
         itemDTO.setDescription(item.getDescription());
+        itemDTO.setImageName(item.getImage());
         itemDTO.setInitialPrice(item.getInitialPrice());
         itemDTO.setLastBid(item.getLastBid());
         return itemDTO;
@@ -38,6 +37,7 @@ public class ItemMapper {
         item.setReference(itemDTO.getReference());
         item.setName(itemDTO.getName());
         item.setDescription(itemDTO.getDescription());
+        item.setImage(itemDTO.getImageName());
         item.setInitialPrice(itemDTO.getInitialPrice());
         item.setLastBid(itemDTO.getLastBid());
 

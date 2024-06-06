@@ -1,11 +1,9 @@
 package ch.etmles.auction.Services;
 
-import ch.etmles.auction.DTOs.AppUserDTO;
 import ch.etmles.auction.DTOs.ItemDTO;
 import ch.etmles.auction.Entities.AppUser;
 import ch.etmles.auction.Entities.Item;
 import ch.etmles.auction.Exceptions.ItemNotFoundException;
-import ch.etmles.auction.Mappers.AppUserMapper;
 import ch.etmles.auction.Mappers.ItemMapper;
 import ch.etmles.auction.Repositories.AppUserRepository;
 import ch.etmles.auction.Repositories.ItemRepository;
@@ -21,9 +19,6 @@ public class ItemService {
 
     @Autowired
     private ItemRepository itemRepository;
-
-    @Autowired
-    private AppUserMapper appUserMapper;
 
     @Autowired
     AppUserRepository appUserRepository;
@@ -52,6 +47,7 @@ public class ItemService {
         item.setId(id);
         item.setName(itemDTO.getName());
         item.setDescription(itemDTO.getDescription());
+        item.setImage(itemDTO.getImageName());
         item.setInitialPrice(itemDTO.getInitialPrice());
         item.setLastBid(itemDTO.getLastBid());
 

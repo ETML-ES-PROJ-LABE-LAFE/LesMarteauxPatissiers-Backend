@@ -34,6 +34,9 @@ public class Item {
     @Column(name = "descriptionItem", nullable = false)
     private String description;
 
+    @Column(name = "imageItem") //nom de l'image
+    private String image;
+
     @Column(name = "initialPriceItem", nullable = false)
     private BigDecimal initialPrice;
 
@@ -44,11 +47,12 @@ public class Item {
 
     }
 
-    public Item(String name, Category category, AppUser appUser, String description, BigDecimal initialPrice) {
+    public Item(String name, Category category, AppUser appUser, String description, String image, BigDecimal initialPrice) {
         this.name = name;
         this.category = category;
         this.appUser = appUser;
         this.description = description;
+        this.image = image;
         this.initialPrice = initialPrice;
         this.lastBid = BigDecimal.ZERO;
     }
@@ -114,6 +118,14 @@ public class Item {
         this.description = description;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public BigDecimal getInitialPrice() {
         return initialPrice;
     }
@@ -140,13 +152,14 @@ public class Item {
                 Objects.equals(category, item.category) &&
                 Objects.equals(appUser, item.appUser) &&
                 Objects.equals(description, item.description) &&
+                Objects.equals(image, item.image) &&
                 Objects.equals(initialPrice, item.initialPrice) &&
                 Objects.equals(lastBid, item.lastBid);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, reference, name, category, appUser, description, initialPrice, lastBid);
+        return Objects.hash(id, reference, name, category, appUser, description, image, initialPrice, lastBid);
     }
 
     @Override
@@ -158,6 +171,7 @@ public class Item {
                 ", category=" + category +
                 ", appUser=" + appUser +
                 ", description='" + description + '\'' +
+                ", image='" + image + '\'' +
                 ", initialPrice=" + initialPrice +
                 ", lastBid=" + lastBid +
                 '}';
