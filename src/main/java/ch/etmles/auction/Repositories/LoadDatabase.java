@@ -79,11 +79,13 @@ public class LoadDatabase {
 
     private void addItemsToSubCategories(ItemRepository itemRepository, List<Category> subCat) {
         AppUser user = new AppUser("Toto","Philippe",BigDecimal.valueOf(1000));
+        AppUser user1 = new AppUser("Toto","Giovanni",BigDecimal.valueOf(8000));
         appUserRepository.save(user);
+        appUserRepository.save(user1);
 
         itemRepository.save(new Item("Iphone 12", subCat.get(0),user, "Latest Apple smartphone", BigDecimal.valueOf(999.99)));
-        itemRepository.save(new Item("Iphone 13", subCat.get(0),user, "Latest Apple smartphone", BigDecimal.valueOf(1099.99)));
-        itemRepository.save(new Item("Iphone 13", subCat.get(0),user, "Latest Apple smartphone", BigDecimal.valueOf(1299.99)));
+        itemRepository.save(new Item("Iphone 13", subCat.get(0),user1, "Latest Apple smartphone", BigDecimal.valueOf(1099.99)));
+        itemRepository.save(new Item("Iphone 13", subCat.get(0),user1, "Latest Apple smartphone", BigDecimal.valueOf(1299.99)));
         itemRepository.save(new Item("Iphone 19 Pro Plus", subCat.get(0),user, "Latest Apple smartphone", BigDecimal.valueOf(2999.99)));
         itemRepository.save(new Item("MacBook Pro 13' pouces", subCat.get(1),user, "High-end Apple laptop", BigDecimal.valueOf(1999.99)));
         /*
