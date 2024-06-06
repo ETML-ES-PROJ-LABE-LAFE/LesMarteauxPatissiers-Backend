@@ -1,9 +1,13 @@
 package ch.etmles.auction.Mappers;
 
 import ch.etmles.auction.DTOs.ItemDTO;
+import ch.etmles.auction.Entities.AppUser;
 import ch.etmles.auction.Entities.Category;
 import ch.etmles.auction.Entities.Item;
+import ch.etmles.auction.Repositories.AppUserRepository;
+import ch.etmles.auction.Repositories.CategoryRepository;
 import ch.etmles.auction.Services.CategoryService;
+import ch.etmles.auction.Services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +15,9 @@ import org.springframework.stereotype.Component;
 public class ItemMapper {
 
     @Autowired
-    private CategoryService categoryService;
+    private AppUserRepository appUserRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     public ItemDTO convertToDTO(Item item) {
         ItemDTO itemDTO = new ItemDTO();
@@ -19,6 +25,7 @@ public class ItemMapper {
         itemDTO.setReference(item.getReference());
         itemDTO.setName(item.getName());
         itemDTO.setCategoryId(item.getCategory().getId());
+        itemDTO.setAppUserId(item.getAppUser().getId());
         itemDTO.setDescription(item.getDescription());
         itemDTO.setInitialPrice(item.getInitialPrice());
         itemDTO.setLastBid(item.getLastBid());
@@ -33,8 +40,16 @@ public class ItemMapper {
         item.setDescription(itemDTO.getDescription());
         item.setInitialPrice(itemDTO.getInitialPrice());
         item.setLastBid(itemDTO.getLastBid());
-        Category category = categoryService.getCategoryById(itemDTO.getCategoryId());
+
+        Category category = categoryRepository.findById(itemDTO.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found with id: " + itemDTO.getCategoryId()));
         item.setCategory(category);
+
+        AppUser appUser = appUserRepository.findById(itemDTO.getAppUserId())
+                .orElseThrow(() -> new RuntimeException("AppUser not found with id: " + itemDTO.getAppUserId()));
+        item.setAppUser(appUser);
+
         return item;
     }
+
 }

@@ -26,6 +26,11 @@ public class Item {
     @JsonIgnore
     private Category category;
 
+    @ManyToOne
+    @JoinColumn(name="idAppUser", nullable = false)
+    @JsonIgnore
+    private AppUser appUser;
+
     @Column(name = "descriptionItem", nullable = false)
     private String description;
 
@@ -39,10 +44,10 @@ public class Item {
 
     }
 
-    public Item(String name, Category category, String description, BigDecimal initialPrice) {
-        this();
+    public Item(String name, Category category, AppUser appUser, String description, BigDecimal initialPrice) {
         this.name = name;
         this.category = category;
+        this.appUser = appUser;
         this.description = description;
         this.initialPrice = initialPrice;
         this.lastBid = BigDecimal.ZERO;
@@ -93,6 +98,14 @@ public class Item {
         this.category = category;
     }
 
+    public AppUser getAppUser() {
+        return appUser;
+    }
+
+    public void setAppUser(AppUser appUser) {
+        this.appUser = appUser;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -125,6 +138,7 @@ public class Item {
                 Objects.equals(reference, item.reference) &&
                 Objects.equals(name, item.name) &&
                 Objects.equals(category, item.category) &&
+                Objects.equals(appUser, item.appUser) &&
                 Objects.equals(description, item.description) &&
                 Objects.equals(initialPrice, item.initialPrice) &&
                 Objects.equals(lastBid, item.lastBid);
@@ -132,7 +146,7 @@ public class Item {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, reference, name, category, description, initialPrice, lastBid);
+        return Objects.hash(id, reference, name, category, appUser, description, initialPrice, lastBid);
     }
 
     @Override
@@ -142,6 +156,7 @@ public class Item {
                 ", reference='" + reference.substring(0, 8) + '\'' +
                 ", name='" + name + '\'' +
                 ", category=" + category +
+                ", appUser=" + appUser +
                 ", description='" + description + '\'' +
                 ", initialPrice=" + initialPrice +
                 ", lastBid=" + lastBid +
