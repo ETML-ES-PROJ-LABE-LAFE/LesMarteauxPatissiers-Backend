@@ -49,7 +49,6 @@ public class ItemService {
         item.setDescription(itemDTO.getDescription());
         item.setImage(itemDTO.getImageName());
         item.setInitialPrice(itemDTO.getInitialPrice());
-        item.setLastBid(itemDTO.getLastBid());
 
         Optional<AppUser> appUserOptional = appUserRepository.findById(itemDTO.getAppUserId());
         if (appUserOptional.isPresent()) {
