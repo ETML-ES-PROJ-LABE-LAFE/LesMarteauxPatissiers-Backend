@@ -40,8 +40,6 @@ public class Item {
     @Column(name = "initialPriceItem", nullable = false)
     private BigDecimal initialPrice;
 
-    @Column(name = "lastBidItem")
-    private BigDecimal lastBid;
 
     public Item() {
 
@@ -54,7 +52,7 @@ public class Item {
         this.description = description;
         this.image = image;
         this.initialPrice = initialPrice;
-        this.lastBid = BigDecimal.ZERO;
+
     }
 
     @PrePersist
@@ -134,13 +132,6 @@ public class Item {
         this.initialPrice = initialPrice;
     }
 
-    public BigDecimal getLastBid() {
-        return lastBid;
-    }
-
-    public void setLastBid(BigDecimal lastBid) {
-        this.lastBid = lastBid;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -153,13 +144,12 @@ public class Item {
                 Objects.equals(appUser, item.appUser) &&
                 Objects.equals(description, item.description) &&
                 Objects.equals(image, item.image) &&
-                Objects.equals(initialPrice, item.initialPrice) &&
-                Objects.equals(lastBid, item.lastBid);
+                Objects.equals(initialPrice, item.initialPrice);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, reference, name, category, appUser, description, image, initialPrice, lastBid);
+        return Objects.hash(id, reference, name, category, appUser, description, image, initialPrice);
     }
 
     @Override
@@ -173,7 +163,6 @@ public class Item {
                 ", description='" + description + '\'' +
                 ", image='" + image + '\'' +
                 ", initialPrice=" + initialPrice +
-                ", lastBid=" + lastBid +
                 '}';
     }
 }

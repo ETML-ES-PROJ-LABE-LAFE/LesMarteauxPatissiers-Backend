@@ -1,6 +1,8 @@
 package ch.etmles.auction.Controllers;
 
+import ch.etmles.auction.DTOs.BidDTO;
 import ch.etmles.auction.DTOs.ItemDTO;
+import ch.etmles.auction.Services.BidService;
 import ch.etmles.auction.Services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,8 @@ public class ItemController {
 
     @Autowired
     private ItemService itemService;
+    @Autowired
+    private BidService bidService;
 
     @GetMapping
     public List<ItemDTO> getAllItems() {
@@ -37,6 +41,13 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedItem);
     }
 
+    //get all bids by item id
+    @GetMapping("/{id}/bids")
+    public ResponseEntity<List<BidDTO>> getBidsByItem(@PathVariable long id) {
+        List<BidDTO> bids = bidService.getBidsByItemId(id);
+        return !bids.isEmpty() ? ResponseEntity.ok(bids) : ResponseEntity.noContent().build();
+    }
+
     /* exemple d'envoi avec curl
     curl -i -X PUT http://localhost:8080/api/items/71 ^
         -H "Content-Type: application/json" ^
@@ -49,10 +60,13 @@ public class ItemController {
         HttpStatus status = exists ? HttpStatus.OK : HttpStatus.CREATED;
         return ResponseEntity.status(status).body(savedItem);
     }
+
     //TODO: test on exception
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteItem(@PathVariable long id) {
         itemService.deleteItem(id);
         return ResponseEntity.ok().build();
     }
+
+
 }

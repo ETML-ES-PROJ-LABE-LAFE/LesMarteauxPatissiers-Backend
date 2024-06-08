@@ -20,6 +20,10 @@ public class Bid {
     @JoinColumn(name = "idAppUser", nullable = false)
     private AppUser appUser;
 
+    @ManyToOne
+    @JoinColumn (name="idAuction", nullable = false)
+    private Auction auction;
+
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
@@ -28,14 +32,13 @@ public class Bid {
 
     public Bid() {}
 
-
-    public Bid(Item item, AppUser appUser, BigDecimal amount, LocalDateTime bidTime) {
+    public Bid(Item item, AppUser appUser, Auction auction, BigDecimal amount, LocalDateTime bidTime) {
         this.item = item;
         this.appUser = appUser;
+        this.auction = auction;
         this.amount = amount;
         this.bidTime = bidTime;
     }
-
 
     public long getId() {
         return id;
@@ -61,6 +64,13 @@ public class Bid {
         this.appUser = appUser;
     }
 
+    public Auction getAuction() {
+        return auction;
+    }
+    public void setAuction(Auction auction) {
+        this.auction = auction;
+    }
+
     public BigDecimal getAmount() {
         return amount;
     }
@@ -76,6 +86,5 @@ public class Bid {
     public void setBidTime(LocalDateTime bidTime) {
         this.bidTime = bidTime;
     }
-
 
 }

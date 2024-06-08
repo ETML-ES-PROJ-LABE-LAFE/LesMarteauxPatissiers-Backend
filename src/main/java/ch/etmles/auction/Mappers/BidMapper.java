@@ -16,6 +16,7 @@ public class BidMapper {
         bidDTO.setId(bid.getId());
         bidDTO.setItemId(bid.getItem().getId());
         bidDTO.setAppUserId(bid.getAppUser().getId());
+        bidDTO.setAuctionId(bid.getAuction().getId());
         bidDTO.setAmount(bid.getAmount());
         bidDTO.setBidTime(bid.getBidTime());
         return bidDTO;
@@ -30,7 +31,6 @@ public class BidMapper {
         bid.setId(bidDTO.getId());
         bid.setAmount(bidDTO.getAmount());
         bid.setBidTime(bidDTO.getBidTime());
-        // Set item and appUser in service
         return bid;
     }
 }

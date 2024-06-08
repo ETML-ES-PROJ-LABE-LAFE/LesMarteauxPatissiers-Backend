@@ -7,18 +7,10 @@ public class BidDTO {
     private long id;
     private long itemId;
     private long appUserId;
+    private long auctionId;
     private BigDecimal amount;
     private LocalDateTime bidTime;
 
-    public BidDTO(){}
-
-    public BidDTO(long id, long itemId, long appUserId, BigDecimal amount, LocalDateTime bidTime) {
-        this.id = id;
-        this.itemId = itemId;
-        this.appUserId = appUserId;
-        this.amount = amount;
-        this.bidTime = bidTime;
-    }
 
     public long getId() {
         return id;
@@ -44,6 +36,12 @@ public class BidDTO {
         this.appUserId = appUserId;
     }
 
+    public long getAuctionId() {
+        return auctionId;
+    }
+    public void setAuctionId(long auctionId) {
+        this.auctionId = auctionId;
+    }
     public BigDecimal getAmount() {
         return amount;
     }

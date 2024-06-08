@@ -11,7 +11,7 @@ public class ItemDTO {
     private String description;
     private String imageName;
     private BigDecimal initialPrice;
-    private BigDecimal lastBid;
+
 
     // Getters and Setters
     public long getId() {
@@ -75,13 +75,5 @@ public class ItemDTO {
 
     public void setInitialPrice(BigDecimal initialPrice) {
         this.initialPrice = initialPrice;
-    }
-
-    public BigDecimal getLastBid() {
-        return lastBid;
-    }
-
-    public void setLastBid(BigDecimal lastBid) {
-        this.lastBid = lastBid;
     }
 }

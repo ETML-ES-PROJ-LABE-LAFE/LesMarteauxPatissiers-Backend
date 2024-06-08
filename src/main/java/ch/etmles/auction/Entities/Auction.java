@@ -23,8 +23,14 @@ public class Auction {
     @Column(name = "endTime", nullable = false)
     private LocalDateTime endTime;
 
-    @OneToMany(mappedBy = "auction")
+    @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Bid> bids = new ArrayList<>();
+
+    @Column(name = "isActive", nullable = false)
+    private boolean isActive;
+
+    @Column(name = "desactivationDate")
+    private LocalDateTime desactivationDate;
 
     public Auction() {}
 
@@ -67,6 +73,19 @@ public class Auction {
     public void addBid(Bid bid) {
         this.bids.add(bid);
     }
+    public boolean isActive() {
+        return isActive;
+    }
+    public void setActive(boolean active) {
+        this.isActive = active;
+    }
 
+    public LocalDateTime getDesactivationDate() {
+        return desactivationDate;
+    }
+
+    public void setDesactivationDate(LocalDateTime desactivationDate) {
+        this.desactivationDate = desactivationDate;
+    }
 }
 

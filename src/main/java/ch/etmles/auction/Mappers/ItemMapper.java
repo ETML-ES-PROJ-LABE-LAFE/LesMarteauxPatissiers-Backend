@@ -27,7 +27,6 @@ public class ItemMapper {
         itemDTO.setDescription(item.getDescription());
         itemDTO.setImageName(item.getImage());
         itemDTO.setInitialPrice(item.getInitialPrice());
-        itemDTO.setLastBid(item.getLastBid());
         return itemDTO;
     }
 
@@ -39,7 +38,6 @@ public class ItemMapper {
         item.setDescription(itemDTO.getDescription());
         item.setImage(itemDTO.getImageName());
         item.setInitialPrice(itemDTO.getInitialPrice());
-        item.setLastBid(itemDTO.getLastBid());
 
         Category category = categoryRepository.findById(itemDTO.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + itemDTO.getCategoryId()));
