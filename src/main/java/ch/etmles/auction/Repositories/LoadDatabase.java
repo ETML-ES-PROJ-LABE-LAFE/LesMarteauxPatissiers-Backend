@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +18,13 @@ public class LoadDatabase {
 
     private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
     private final AppUserRepository appUserRepository;
+    private final AuctionRepository auctionRepository;
+    private final BidRepository bidRepository;
 
-    public LoadDatabase(AppUserRepository appUserRepository) {
+    public LoadDatabase(AppUserRepository appUserRepository, AuctionRepository auctionRepository, BidRepository bidRepository) {
         this.appUserRepository = appUserRepository;
+        this.auctionRepository = auctionRepository;
+        this.bidRepository = bidRepository;
     }
 
     @Bean
@@ -80,9 +85,10 @@ public class LoadDatabase {
         AppUser user1 = new AppUser("Toto","Giovanni",BigDecimal.valueOf(8000));
         appUserRepository.save(user);
         appUserRepository.save(user1);
-
-        itemRepository.save(new Item("Iphone 12", subCat.get(0),user, "Latest Apple smartphone","Smartphone1.png", BigDecimal.valueOf(999.99)));
-        itemRepository.save(new Item("Iphone 13", subCat.get(0),user1, "Latest Apple smartphone","Smartphone2.png", BigDecimal.valueOf(1099.99)));
+        Item item1 = new Item("Iphone 12", subCat.get(0),user, "Latest Apple smartphone","Smartphone1.png", BigDecimal.valueOf(999.99));
+        Item item2 = new Item("Iphone 13", subCat.get(0),user1, "Latest Apple smartphone","Smartphone2.png", BigDecimal.valueOf(1099.99));
+        itemRepository.save(item1);
+        itemRepository.save(item2);
         itemRepository.save(new Item("Iphone 13", subCat.get(0),user1, "Latest Apple smartphone","Smartphone3.png", BigDecimal.valueOf(1299.99)));
         itemRepository.save(new Item("Iphone 19 Pro Plus", subCat.get(0),user, "Latest Apple smartphone","Smartphone4.png", BigDecimal.valueOf(2999.99)));
         itemRepository.save(new Item("MacBook Pro 13' pouces", subCat.get(1),user, "High-end Apple laptop","Computer1.png", BigDecimal.valueOf(1999.99)));
@@ -130,5 +136,17 @@ public class LoadDatabase {
         for (int i = nbItems; i < 70; i++) {
             itemRepository.save(new Item("Item " + (i+1), subCat.get(i % subCat.size()), "Description for item " + (i+1), BigDecimal.valueOf((i+1) * 10.0)));
         }*/
+        Auction auction1 = new Auction(item1, LocalDateTime.now(),LocalDateTime.from(LocalDateTime.now()).plusDays(5));
+        Auction auction2 = new Auction(item2, LocalDateTime.now(),LocalDateTime.from(LocalDateTime.now()).plusDays(5));
+        auctionRepository.save(auction1);
+        auctionRepository.save(auction2);
+        Bid bid1 = new Bid(item1,user, auction1,BigDecimal.valueOf(1000),LocalDateTime.now());
+        Bid bid2 = new Bid(item2,user1, auction2,BigDecimal.valueOf(1000),LocalDateTime.now());
+        bidRepository.save(bid1);
+        bidRepository.save(bid2);
+
+    }
+    public void addAuction() {
+
     }
 }

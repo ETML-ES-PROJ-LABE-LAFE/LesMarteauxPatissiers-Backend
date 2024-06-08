@@ -14,29 +14,22 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idItem")
     private long id;
-
     @Column(name = "refItem", unique = true, nullable = false)
     private String reference;
-
     @Column(name = "nameItem", nullable = false)
     private String name;
-
     @ManyToOne
     @JoinColumn(name = "idCategorie", nullable = false)
     @JsonIgnore
     private Category category;
-
     @ManyToOne
     @JoinColumn(name="idAppUser", nullable = false)
     @JsonIgnore
     private AppUser appUser;
-
     @Column(name = "descriptionItem", nullable = false)
     private String description;
-
     @Column(name = "imageItem") //nom de l'image
     private String image;
-
     @Column(name = "initialPriceItem", nullable = false)
     private BigDecimal initialPrice;
 
