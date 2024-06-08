@@ -54,41 +54,36 @@ public class BidService {
         if (!(auction.isActive())) {
             throw new RuntimeException("Auction is not active");
         }
-        if (!(auction.getId() == bidDTO.getAuctionId())) {
-            throw new RuntimeException("Pas la bonne enchère : " + bidDTO.getAuctionId());
-        }
         if (!auction.getBids().isEmpty()) {
             Bid lastBid = auction.getBids().get(auction.getBids().size() - 1);
             if (!(bidDTO.getAmount().compareTo(lastBid.getAmount()) > 0)) {
                 // si le montant de la mise n'est pas plus grand que la dernière mise
-                throw new RuntimeException("faut miser plus Michel !");
+                throw new RuntimeException("Quelqu'un a déjà misé plus que vous! le montant de la dernière mise : " + lastBid.getAmount());
             }
-        } else {
-            Item item = itemRepository.findById(bidDTO.getItemId())
-                    .orElseThrow(() -> new RuntimeException("Item not found with id : " + bidDTO.getItemId()));
-            if (!(item.getId() == auction.getItem().getId())) {
-                throw new RuntimeException("Bad item id : " + bidDTO.getItemId());
-            }
-
-            if (!(bidDTO.getAmount().compareTo(item.getInitialPrice()) > 0)) {
-                throw new RuntimeException("le prix de l'item est bien supérieur à la mise Michel ! :  " + item.getInitialPrice());
-            }
-
-            AppUser appUser = appUserRepository.findById(bidDTO.getAppUserId())
-                    .orElseThrow(() -> new RuntimeException("AppUser not found with id: " + bidDTO.getAppUserId()));
-            if (bidDTO.getAmount().compareTo(appUser.getCredit()) < 0) {
-                appUser.setCredit(BigDecimal.valueOf(appUser.getCredit().doubleValue()- bidDTO.getAmount().doubleValue()));
-                bid.setItem(item);
-                bid.setAppUser(appUser);
-                bid.setAuction(auction);
-                bid.setBidTime(LocalDateTime.now());
-                auction.addBid(bid);  // Ajouter la mise à l'enchère
-                Bid savedBid = bidRepository.save(bid);
-                return bidMapper.toDto(savedBid);
-            }
-            throw new RuntimeException("Désolé mais ce user est trop pauvre : " + appUser.getId());
         }
-        throw new RuntimeException("Something went wrong... Please try again");
+        Item item = itemRepository.findById(bidDTO.getItemId())
+                .orElseThrow(() -> new RuntimeException("Item not found with id : " + bidDTO.getItemId()));
+        if (!(item.getId() == auction.getItem().getId())) {
+            throw new RuntimeException("Bad item id : " + bidDTO.getItemId());
+        }
+
+        if (!(bidDTO.getAmount().compareTo(item.getInitialPrice()) > 0)) {
+            throw new RuntimeException("La mise est trop basse ! :  " + item.getInitialPrice());
+        }
+
+        AppUser appUser = appUserRepository.findById(bidDTO.getAppUserId())
+                .orElseThrow(() -> new RuntimeException("AppUser not found with id: " + bidDTO.getAppUserId()));
+        if (bidDTO.getAmount().compareTo(appUser.getCredit()) < 0) {
+            appUser.setCredit(BigDecimal.valueOf(appUser.getCredit().doubleValue()- bidDTO.getAmount().doubleValue()));
+            bid.setItem(item);
+            bid.setAppUser(appUser);
+            bid.setAuction(auction);
+            bid.setBidTime(LocalDateTime.now());
+            auction.addBid(bid);  // Ajouter la mise à l'enchère
+            Bid savedBid = bidRepository.save(bid);
+            return bidMapper.toDto(savedBid);
+        }
+        throw new RuntimeException("Désolé mais ce user n'a pas assez de crédit ! UserID : " + appUser.getId());
     }
 
     public List<BidDTO> getBidsByItemId(long itemId) {
