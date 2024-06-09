@@ -44,6 +44,7 @@ public class CategoryController {
         Category category = categoryMapper.convertToEntity(categoryDTO);
         Category savedCategory = categoryService.createCategory(category);
         return ResponseEntity.ok(categoryMapper.convertToDTO(savedCategory));
+        //TODO if category already exists !
     }
 
     @PutMapping("/{id}")
@@ -51,12 +52,14 @@ public class CategoryController {
         Category categoryDetails = categoryMapper.convertToEntity(categoryDTO);
         Category updatedCategory = categoryService.updateCategory(id, categoryDetails);
         return ResponseEntity.ok(categoryMapper.convertToDTO(updatedCategory));
+        //TODO if category not found !
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
         return ResponseEntity.ok().build();
+        //TODO if category not found !
     }
 
     @GetMapping("/{id}/subcategories")
@@ -73,12 +76,14 @@ public class CategoryController {
         Category subCategory = categoryMapper.convertToEntity(subCategoryDTO);
         Category savedSubCategory = categoryService.addSubCategory(id, subCategory);
         return ResponseEntity.ok(categoryMapper.convertToDTO(savedSubCategory));
+        //TODO if already exists (unique constraint) !
     }
 
     @DeleteMapping("/subcategories/{subId}")
     public ResponseEntity<Void> deleteSubCategory(@PathVariable Long subId) {
         categoryService.deleteSubCategory(subId);
         return ResponseEntity.ok().build();
+        //TODO if subcategory not found !
     }
 
     //récupération des items par catégorie
@@ -86,5 +91,6 @@ public class CategoryController {
     public ResponseEntity<List<ItemDTO>> getItemsByCategoryId(@PathVariable Long id) {
         List<ItemDTO> items = itemService.getItemsBySubCategoryId(id);
         return ResponseEntity.ok(items);
+        //TODO if items not found !
     }
 }
