@@ -35,6 +35,7 @@ public class ItemController {
     public ResponseEntity<ItemDTO> createItem(@RequestBody ItemDTO itemDTO) {
         ItemDTO savedItem = itemService.createItem(itemDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedItem);
+        //TODO if item already exists !
     }
 
     /* exemple d'envoi avec curl
@@ -48,11 +49,13 @@ public class ItemController {
         ItemDTO savedItem = itemService.updateOrCreateItem(id, itemDTO);
         HttpStatus status = exists ? HttpStatus.OK : HttpStatus.CREATED;
         return ResponseEntity.status(status).body(savedItem);
+        //TODO if item not found !
     }
     //TODO: test on exception
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteItem(@PathVariable long id) {
         itemService.deleteItem(id);
         return ResponseEntity.ok().build();
+        //TODO if item not found !
     }
 }
