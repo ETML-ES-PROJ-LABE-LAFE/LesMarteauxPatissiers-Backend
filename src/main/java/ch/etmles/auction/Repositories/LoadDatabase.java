@@ -146,7 +146,5 @@ public class LoadDatabase {
         bidRepository.save(bid2);
 
     }
-    public void addAuction() {
 
-    }
 }
