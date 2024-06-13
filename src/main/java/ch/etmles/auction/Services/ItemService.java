@@ -43,7 +43,7 @@ public class ItemService {
     }
 
     public ItemDTO updateOrCreateItem(long id, ItemDTO itemDTO) {
-        Item item = itemRepository.findById(id).orElseGet(() -> new Item());
+        Item item = itemRepository.findById(id).orElseGet(Item::new);
         item.setId(id);
         item.setName(itemDTO.getName());
         item.setDescription(itemDTO.getDescription());
@@ -73,6 +73,16 @@ public class ItemService {
 
     public List<ItemDTO> getItemsBySubCategoryId(long subCategoryId) {
         List<Item> items = itemRepository.findByCategory_Id(subCategoryId);
+        return items.stream().map(itemMapper::convertToDTO).collect(Collectors.toList());
+    }
+
+    public List<ItemDTO> findItemsByBuyer(long buyerId) {
+        List<Item> items = itemRepository.findItemsByBuyer(buyerId);
+        return items.stream().map(itemMapper::convertToDTO).collect(Collectors.toList());
+    }
+
+    public List<ItemDTO> findItemsBySeller(long sellerId) {
+        List<Item> items = itemRepository.findItemsBySeller(sellerId);
         return items.stream().map(itemMapper::convertToDTO).collect(Collectors.toList());
     }
 }

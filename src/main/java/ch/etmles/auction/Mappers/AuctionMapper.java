@@ -20,8 +20,6 @@ public class AuctionMapper {
         AuctionDTO auctionDTO = new AuctionDTO();
         auctionDTO.setId(auction.getId());
         auctionDTO.setItemId(auction.getItem().getId());
-        auctionDTO.setStartTime(auction.getStartTime());
-        auctionDTO.setEndTime(auction.getEndTime());
         List<Long> bidsList = auction.getBids().stream().map(Bid::getId).collect(Collectors.toList());
         auctionDTO.setBids(bidsList);
         auctionDTO.setIsActive(auction.isActive());
@@ -35,15 +33,9 @@ public class AuctionMapper {
         }
         Auction auction = new Auction();
         auction.setId(auctionDTO.getId());
-        auction.setStartTime(auctionDTO.getStartTime());
-        auction.setEndTime(auctionDTO.getEndTime());
         auction.setActive(auctionDTO.isActive());
         auction.setDesactivationDate(auctionDTO.getDesactivatedTime());
         // Les champs item et bids sont définis dans le service
         return auction;
     }
-
-
-
-
 }

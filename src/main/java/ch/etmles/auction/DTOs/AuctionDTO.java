@@ -7,8 +7,6 @@ public class AuctionDTO {
 
     private long id;
     private long itemId;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
     private List<Long> bids;
     private boolean isActive;
     private LocalDateTime desactivatedTime;
@@ -25,18 +23,6 @@ public class AuctionDTO {
     }
     public void setItemId(long itemId) {
         this.itemId = itemId;
-    }
-    public LocalDateTime getStartTime() {
-        return startTime;
-    }
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
     }
     public List<Long> getBids() {
         return bids;

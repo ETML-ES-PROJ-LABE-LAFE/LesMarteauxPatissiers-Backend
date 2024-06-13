@@ -13,15 +13,9 @@ public class Auction {
     @Column(name = "idAuction")
     private long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "idItem", nullable = false)
     private Item item;
-
-    @Column(name = "startTime", nullable = false)
-    private LocalDateTime startTime;
-
-    @Column(name = "endTime", nullable = false)
-    private LocalDateTime endTime;
 
     @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Bid> bids = new ArrayList<>();
@@ -34,10 +28,8 @@ public class Auction {
 
     public Auction() {}
 
-    public Auction(Item item, LocalDateTime startTime, LocalDateTime endTime) {
+    public Auction(Item item) {
         this.item = item;
-        this.startTime = startTime;
-        this.endTime = endTime;
     }
 
     public long getId() {
@@ -51,18 +43,6 @@ public class Auction {
     }
     public void setItem(Item item) {
         this.item = item;
-    }
-    public LocalDateTime getStartTime() {
-        return startTime;
-    }
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
     }
     public List<Bid> getBids() {
         return bids;

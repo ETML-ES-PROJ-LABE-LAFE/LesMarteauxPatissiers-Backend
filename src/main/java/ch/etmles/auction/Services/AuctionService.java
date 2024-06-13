@@ -50,21 +50,6 @@ public class AuctionService {
         return auctionMapper.toDto(savedAuction);
     }
 
-    public AuctionDTO updateAuction(long id, AuctionDTO auctionDTO) {
-        Auction auction = auctionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Auction not found with id: " + id));
-
-        // Récupérer Item
-        Item item = itemRepository.findById(auctionDTO.getItemId())
-                .orElseThrow(() -> new RuntimeException("Item not found with id: " + auctionDTO.getItemId()));
-
-        auction.setItem(item);
-        auction.setStartTime(auctionDTO.getStartTime());
-        auction.setEndTime(auctionDTO.getEndTime());
-        Auction updatedAuction = auctionRepository.save(auction);
-        return auctionMapper.toDto(updatedAuction);
-    }
-
     public void deactivateAuction(long id) {
         Auction auction = auctionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Auction not found with id: " + id));

@@ -41,16 +41,6 @@ public class AuctionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(auctionService.createAuction(auctionDTO));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<AuctionDTO> updateAuction(@PathVariable long id, @RequestBody AuctionDTO auctionDTO) {
-        try {
-            AuctionDTO updatedAuction = auctionService.updateAuction(id, auctionDTO);
-            return ResponseEntity.ok(updatedAuction);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     //endpoint to soft delete auction -> no response
     @PutMapping("/{id}/desactivate")
     public ResponseEntity<AuctionDTO> deactivateAuction(@PathVariable long id) {

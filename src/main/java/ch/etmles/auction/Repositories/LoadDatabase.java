@@ -54,8 +54,6 @@ public class LoadDatabase {
             createAndSaveSubCategories(categoryRepository, artAntiques, "Paintings", "Sculptures", "Antique Furniture", "Collectibles", "Photography");
             createAndSaveSubCategories(categoryRepository, sportsLeisure, "Sport Equipment", "Sport Clothing", "Camping Gear", "Toys", "Fishing Gear");
 
-
-
             // Fetching all sub-categories
             List<Category> subCat = new ArrayList<>();
             List<Category> cat = categoryRepository.findAllWithSubCategories();
@@ -136,15 +134,13 @@ public class LoadDatabase {
         for (int i = nbItems; i < 70; i++) {
             itemRepository.save(new Item("Item " + (i+1), subCat.get(i % subCat.size()), "Description for item " + (i+1), BigDecimal.valueOf((i+1) * 10.0)));
         }*/
-        Auction auction1 = new Auction(item1, LocalDateTime.now(),LocalDateTime.from(LocalDateTime.now()).plusDays(5));
-        Auction auction2 = new Auction(item2, LocalDateTime.now(),LocalDateTime.from(LocalDateTime.now()).plusDays(5));
+        Auction auction1 = new Auction(item1);
+        Auction auction2 = new Auction(item2);
         auctionRepository.save(auction1);
         auctionRepository.save(auction2);
-        Bid bid1 = new Bid(item1,user, auction1,BigDecimal.valueOf(1000),LocalDateTime.now());
-        Bid bid2 = new Bid(item2,user1, auction2,BigDecimal.valueOf(1000),LocalDateTime.now());
+        Bid bid1 = new Bid(item1,user1, auction1,BigDecimal.valueOf(1000),LocalDateTime.now());
+        Bid bid2 = new Bid(item2,user, auction2,BigDecimal.valueOf(1000),LocalDateTime.now());
         bidRepository.save(bid1);
         bidRepository.save(bid2);
-
     }
-
 }
