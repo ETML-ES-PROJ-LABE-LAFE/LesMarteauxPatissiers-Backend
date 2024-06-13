@@ -67,29 +67,34 @@ public class BidService {
             throw new RuntimeException("Bad item id : " + bidDTO.getItemId());
         }
 
-        if (!(bidDTO.getAmount().compareTo(item.getInitialPrice()) > 0)) {
+        if (!(bidDTO.getAmount().compareTo(item.getInitialPrice()) >= 0)) {
             throw new RuntimeException("La mise est trop basse ! :  " + item.getInitialPrice());
         }
 
         AppUser appUser = appUserRepository.findById(bidDTO.getAppUserId())
                 .orElseThrow(() -> new RuntimeException("AppUser not found with id: " + bidDTO.getAppUserId()));
         if (!(bidDTO.getAmount().compareTo(appUser.getCredit()) > 0)) {
-            // si le montant de la mise n'est pas inférieur au crédit de l'utilisateur...
-            //on soustrait le montant de la mise au total disponible du user pour mettre à jour son crédit après la mise
-            appUser.setCredit(appUser.getCredit().subtract(bidDTO.getAmount()));
+            try {
+                //on soustrait le montant de la mise au total disponible du user pour mettre à jour son crédit après la mise
+                appUser.setCredit(appUser.getCredit().subtract(bidDTO.getAmount()));
 
-            // on retroverse le montant de la mise au dernier user qui a misé
-            //Bid lastBid = auction.getBids().get(auction.getBids().size() - 1);
-            //AppUser oldBidder = lastBid.getAppUser();
-            //oldBidder.setCredit(lastBid.getAmount().subtract(bidDTO.getAmount()));
-            // on enregistre la nouvelle mise
-            bid.setItem(item);
-            bid.setAppUser(appUser);
-            bid.setAuction(auction);
-            bid.setBidTime(LocalDateTime.now());
-            auction.addBid(bid);  // Ajouter la mise à l'enchère
-            Bid savedBid = bidRepository.save(bid);
-            return bidMapper.toDto(savedBid);
+                // on retroverse le montant de la mise précédente au user qui l'a effectué
+                if (!auction.getBids().isEmpty()) {
+                    Bid lastBid = auction.getBids().get(auction.getBids().size() - 1);
+                    AppUser oldBidder = lastBid.getAppUser();
+                    oldBidder.setCredit(oldBidder.getCredit().add(lastBid.getAmount()));
+                }
+                // on enregistre la nouvelle mise
+                bid.setItem(item);
+                bid.setAppUser(appUser);
+                bid.setAuction(auction);
+                bid.setBidTime(LocalDateTime.now());
+                auction.addBid(bid);  // Ajouter la mise à l'enchère
+                Bid savedBid = bidRepository.save(bid);
+                return bidMapper.toDto(savedBid);
+            } catch (Exception e) {
+                throw new RuntimeException(e + " : au secours !!!");
+            }
         }
         throw new RuntimeException("Désolé mais ce user n'a pas assez de crédit ! UserID : " + appUser.getId() + " Solde disponible : " + appUser.getCredit());
     }
