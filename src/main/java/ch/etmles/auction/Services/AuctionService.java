@@ -44,9 +44,9 @@ public class AuctionService {
                 .orElseThrow(() -> new RuntimeException("Item not found with id: " + auctionDTO.getItemId()));
 
         //control if there is an active auction for the current item
-        List<Auction> existingActiveAuctions = auctionRepository.findActiveAuctionsByItemId(auctionDTO.getItemId());
-        if (!(existingActiveAuctions.isEmpty())) {
-            throw new RuntimeException("An auction for this item is already active with id : " + existingActiveAuctions.get(0).getId());
+        Auction existingActiveAuctions = auctionRepository.findActiveAuctionByItemId(auctionDTO.getItemId());
+        if ((existingActiveAuctions != null)) {
+            throw new RuntimeException("An auction for this item is already active with id : " + existingActiveAuctions.getId());
         }
 
         auction.setItem(item);

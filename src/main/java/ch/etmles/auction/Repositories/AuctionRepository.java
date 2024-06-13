@@ -11,6 +11,6 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
     List<Auction> findByItemId(long id);
 
     @Query("SELECT a FROM Auction a WHERE a.item.id = :itemId AND a.isActive = true")
-    List<Auction> findActiveAuctionsByItemId(long itemId);
+    Auction findActiveAuctionByItemId(long itemId);
 
 }
