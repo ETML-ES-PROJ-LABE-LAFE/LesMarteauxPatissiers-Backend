@@ -23,22 +23,6 @@ public class CategoryService {
                 .orElseThrow(() -> new CategoryNotFoundException(id));
     }
 
-    public Category createCategory(Category category) {
-        return categoryRepository.save(category);
-    }
-
-    public Category updateCategory(Long id, Category categoryDetails) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new CategoryNotFoundException(id));
-        category.setName(categoryDetails.getName());
-        return categoryRepository.save(category);
-    }
-
-    public void deleteCategory(Long id) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new CategoryNotFoundException(id));
-        categoryRepository.delete(category);
-    }
 
     public List<Category> getSubCategories(Long id) {
         Category category = categoryRepository.findById(id)
@@ -46,28 +30,4 @@ public class CategoryService {
         return category.getSubCategories();
     }
 
-    public Category addSubCategory(Long id, Category subCategory) {
-        Category parentCategory = categoryRepository.findById(id)
-                .orElseThrow(() -> new CategoryNotFoundException(id));
-        parentCategory.addSubCategory(subCategory);
-        categoryRepository.save(subCategory); // Save the new subcategory
-        categoryRepository.save(parentCategory); // Update the parent category
-        return subCategory;
-    }
-
-    public Category getSubCategoryById(Long id) {
-        return categoryRepository.findById(id)
-                .orElseThrow(() -> new CategoryNotFoundException(id));
-    }
-
-    public void deleteSubCategory(Long subId) {
-        Category subCategory = categoryRepository.findById(subId)
-                .orElseThrow(() -> new CategoryNotFoundException(subId));
-        Category parentCategory = subCategory.getParentCategory();
-        if (parentCategory != null) {
-            parentCategory.removeSubCategory(subCategory);
-            categoryRepository.save(parentCategory); // Update the parent category
-        }
-        categoryRepository.delete(subCategory);
-    }
 }
