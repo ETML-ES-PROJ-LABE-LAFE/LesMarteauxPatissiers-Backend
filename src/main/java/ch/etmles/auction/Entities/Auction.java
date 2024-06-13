@@ -30,6 +30,7 @@ public class Auction {
 
     public Auction(Item item) {
         this.item = item;
+        this.isActive = true;
     }
 
     public long getId() {

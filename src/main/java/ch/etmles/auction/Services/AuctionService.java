@@ -40,9 +40,14 @@ public class AuctionService {
 
         Auction auction = auctionMapper.toEntity(auctionDTO);
 
-        // Récupérer Item
         Item item = itemRepository.findById(auctionDTO.getItemId())
                 .orElseThrow(() -> new RuntimeException("Item not found with id: " + auctionDTO.getItemId()));
+
+        //control if there is an active auction for the current item
+        List<Auction> existingActiveAuctions = auctionRepository.findActiveAuctionsByItemId(auctionDTO.getItemId());
+        if (!(existingActiveAuctions.isEmpty())) {
+            throw new RuntimeException("An auction for this item is already active with id : " + existingActiveAuctions.get(0).getId());
+        }
 
         auction.setItem(item);
         auction.setActive(true);
