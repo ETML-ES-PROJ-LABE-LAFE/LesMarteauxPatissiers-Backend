@@ -73,8 +73,16 @@ public class BidService {
 
         AppUser appUser = appUserRepository.findById(bidDTO.getAppUserId())
                 .orElseThrow(() -> new RuntimeException("AppUser not found with id: " + bidDTO.getAppUserId()));
-        if (bidDTO.getAmount().compareTo(appUser.getCredit()) < 0) {
-            appUser.setCredit(BigDecimal.valueOf(appUser.getCredit().doubleValue()- bidDTO.getAmount().doubleValue()));
+        if (!(bidDTO.getAmount().compareTo(appUser.getCredit()) > 0)) {
+            // si le montant de la mise n'est pas inférieur au crédit de l'utilisateur...
+            //on soustrait le montant de la mise au total disponible du user pour mettre à jour son crédit après la mise
+            appUser.setCredit(appUser.getCredit().subtract(bidDTO.getAmount()));
+
+            // on retroverse le montant de la mise au dernier user qui a misé
+            //Bid lastBid = auction.getBids().get(auction.getBids().size() - 1);
+            //AppUser oldBidder = lastBid.getAppUser();
+            //oldBidder.setCredit(lastBid.getAmount().subtract(bidDTO.getAmount()));
+            // on enregistre la nouvelle mise
             bid.setItem(item);
             bid.setAppUser(appUser);
             bid.setAuction(auction);
@@ -83,13 +91,12 @@ public class BidService {
             Bid savedBid = bidRepository.save(bid);
             return bidMapper.toDto(savedBid);
         }
-        throw new RuntimeException("Désolé mais ce user n'a pas assez de crédit ! UserID : " + appUser.getId());
+        throw new RuntimeException("Désolé mais ce user n'a pas assez de crédit ! UserID : " + appUser.getId() + " Solde disponible : " + appUser.getCredit());
     }
 
     public List<BidDTO> getBidsByItemId(long itemId) {
         List<Bid> bids = bidRepository.findByItemId(itemId);
         return bids.stream().map(bidMapper::toDto).collect(Collectors.toList());
     }
-
 
 }

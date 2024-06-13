@@ -1,7 +1,9 @@
 package ch.etmles.auction.Controllers;
 
+import ch.etmles.auction.DTOs.AuctionDTO;
 import ch.etmles.auction.DTOs.BidDTO;
 import ch.etmles.auction.DTOs.ItemDTO;
+import ch.etmles.auction.Services.AuctionService;
 import ch.etmles.auction.Services.BidService;
 import ch.etmles.auction.Services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ public class ItemController {
     private ItemService itemService;
     @Autowired
     private BidService bidService;
+    @Autowired
+    private AuctionService auctionService;
 
     @GetMapping
     public List<ItemDTO> getAllItems() {
@@ -46,6 +50,12 @@ public class ItemController {
     public ResponseEntity<List<BidDTO>> getBidsByItem(@PathVariable long id) {
         List<BidDTO> bids = bidService.getBidsByItemId(id);
         return !bids.isEmpty() ? ResponseEntity.ok(bids) : ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/auction")
+    public ResponseEntity<List<AuctionDTO>> getAuctionsByItem(@PathVariable long id) {
+        List<AuctionDTO> auctions = auctionService.getAuctionsByItemId(id);
+        return !auctions.isEmpty() ? ResponseEntity.ok(auctions) : ResponseEntity.noContent().build();
     }
 
     /* exemple d'envoi avec curl

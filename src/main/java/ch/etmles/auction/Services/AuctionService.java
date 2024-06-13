@@ -58,4 +58,10 @@ public class AuctionService {
         Auction updatedAuction = auctionRepository.save(auction);
         auctionMapper.toDto(updatedAuction);
     }
+
+    public List<AuctionDTO> getAuctionsByItemId(long itemId) {
+        List<Auction> auctions = auctionRepository.findByItemId(itemId);
+        return auctions.stream().map(auctionMapper::toDto).collect(Collectors.toList());
+    }
+
 }
