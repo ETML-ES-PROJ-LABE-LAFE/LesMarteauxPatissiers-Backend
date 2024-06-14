@@ -3,6 +3,7 @@ package ch.etmles.auction.Controllers;
 import ch.etmles.auction.DTOs.CategoryDTO;
 import ch.etmles.auction.DTOs.ItemDTO;
 import ch.etmles.auction.Entities.Category;
+import ch.etmles.auction.Exceptions.CategoryNotFoundException;
 import ch.etmles.auction.Mappers.CategoryMapper;
 import ch.etmles.auction.Services.CategoryService;
 import ch.etmles.auction.Services.ItemService;
@@ -36,7 +37,10 @@ public class CategoryController {
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Long id) {
         Category category = categoryService.getCategoryById(id);
-        return category != null ? ResponseEntity.ok(categoryMapper.convertToDTO(category)) : ResponseEntity.notFound().build();
+        if (category == null) {
+            throw new CategoryNotFoundException(id);
+        }
+        return ResponseEntity.ok(categoryMapper.convertToDTO(category)) ;
     }
 
     @GetMapping("/{id}/subcategories")

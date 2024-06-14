@@ -18,14 +18,10 @@ import java.util.List;
 @RequestMapping("api/users")
 public class AppUserController {
 
-
     @Autowired
     AppUserService appUserService;
-
     @Autowired
     ItemService itemService;
-    @Autowired
-    private ItemMapper itemMapper;
 
     @GetMapping
     public List<AppUserDTO> getAllUsers() {
@@ -38,7 +34,7 @@ public class AppUserController {
         if (userDTO != null) {
             return ResponseEntity.ok(userDTO);
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();
         }
     }
 
@@ -50,12 +46,12 @@ public class AppUserController {
     @GetMapping("/{id}/purchases")
     public ResponseEntity<List<ItemDTO>> getSoldAuctionByUserId(@PathVariable Long id) {
         List<ItemDTO> items = itemService.findItemsByBuyer(id);
-        return !items.isEmpty() ? ResponseEntity.ok(items) : ResponseEntity.notFound().build();
+        return !items.isEmpty() ? ResponseEntity.ok(items) : ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}/sales")
     public ResponseEntity<List<ItemDTO>> getBoughtAuctionByUserId(@PathVariable Long id) {
         List<ItemDTO> items = itemService.findItemsBySeller(id);
-        return !items.isEmpty() ? ResponseEntity.ok(items) : ResponseEntity.notFound().build();
+        return !items.isEmpty() ? ResponseEntity.ok(items) : ResponseEntity.noContent().build();
     }
 }

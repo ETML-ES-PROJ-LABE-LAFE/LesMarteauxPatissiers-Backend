@@ -13,14 +13,14 @@ public class GlobalExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(ItemNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     String itemNotFoundHandler(ItemNotFoundException ex) {
         return ex.getMessage();
     }
 
     @ResponseBody
     @ExceptionHandler(CategoryNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     String categoryNotFoundHandler(CategoryNotFoundException ex) {
         return ex.getMessage();
     }

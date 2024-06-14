@@ -31,13 +31,12 @@ public class AuctionController {
         if (auctionDTO != null) {
             return ResponseEntity.ok(auctionDTO);
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();
         }
     }
 
     @PostMapping
     public ResponseEntity<AuctionDTO> createAuction(@RequestBody AuctionDTO auctionDTO) {
-
         return ResponseEntity.status(HttpStatus.CREATED).body(auctionService.createAuction(auctionDTO));
     }
 
@@ -46,9 +45,9 @@ public class AuctionController {
     public ResponseEntity<AuctionDTO> deactivateAuction(@PathVariable long id) {
         try {
             auctionService.deactivateAuction(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();
         }
     }
 }

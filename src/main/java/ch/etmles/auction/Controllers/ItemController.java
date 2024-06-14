@@ -25,8 +25,12 @@ public class ItemController {
     private AuctionService auctionService;
 
     @GetMapping
-    public List<ItemDTO> getAllItems() {
-        return itemService.getAllItems();
+    public ResponseEntity<List<ItemDTO>> getAllItems() {
+        List<ItemDTO> items = itemService.getAllItems();
+        if (items.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(items);
     }
 
     @GetMapping("/{id}")
@@ -67,11 +71,9 @@ public class ItemController {
     public ResponseEntity<ItemDTO> updateOrCreateItem(@PathVariable long id, @RequestBody ItemDTO itemDTO) {
         boolean exists = itemService.existsById(id);
         ItemDTO savedItem = itemService.updateOrCreateItem(id, itemDTO);
-        HttpStatus status = exists ? HttpStatus.OK : HttpStatus.CREATED;
-        return ResponseEntity.status(status).body(savedItem);
+        return exists ? ResponseEntity.ok().body(savedItem) : ResponseEntity.status(HttpStatus.CREATED).body(savedItem);
     }
 
-    //TODO: test on exception
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteItem(@PathVariable long id) {
         itemService.deleteItem(id);
