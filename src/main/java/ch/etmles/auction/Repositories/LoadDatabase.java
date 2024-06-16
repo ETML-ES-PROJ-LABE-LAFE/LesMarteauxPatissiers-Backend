@@ -31,7 +31,12 @@ public class LoadDatabase {
     @Transactional
     CommandLineRunner initDatabase(ItemRepository itemRepository, CategoryRepository categoryRepository, AppUserRepository appUserRepository) {
         return args -> {
-            // Creating and saving parent categories
+            appUserRepository.save(new AppUser("Einstein","Albert", BigDecimal.valueOf(20000)));
+            appUserRepository.save(new AppUser("Einstein","David", BigDecimal.valueOf(20000)));
+            appUserRepository.save(new AppUser("Ange Gardien","Joséphine", BigDecimal.valueOf(100000)));
+            appUserRepository.save(new AppUser("Lopez","Francisco", BigDecimal.valueOf(20000)));
+            appUserRepository.save(new AppUser("Pinto","Bruno", BigDecimal.valueOf(214748000)));
+
             Category electronics = new Category("Electronics");
             Category furniture = new Category("Furniture");
             Category clothing = new Category("Clothing and Accessories");
@@ -64,7 +69,7 @@ public class LoadDatabase {
 
             // Adding items to the sub-categories
             addItemsToSubCategories(itemRepository, subCat);
-
+            log.info("Database initialized successfully");
         };
     }
 
@@ -73,7 +78,7 @@ public class LoadDatabase {
             Category subCategory = new Category(subCategoryName);
             parentCategory.addSubCategory(subCategory);
             categoryRepository.save(subCategory);
-            log.info("Preloading sub-category: " + subCategoryName + " to parent category: " + parentCategory.getName());
+            //log.info("Preloading sub-category: " + subCategoryName + " to parent category: " + parentCategory.getName());
         }
         categoryRepository.save(parentCategory); // Update parent with sub-categories
     }
@@ -81,11 +86,6 @@ public class LoadDatabase {
     private void addItemsToSubCategories(ItemRepository itemRepository, List<Category> subCat) {
         AppUser user = new AppUser("Toto","Philippe",BigDecimal.valueOf(1000));
         AppUser user1 = new AppUser("Toto","Giovanni",BigDecimal.valueOf(8000));
-        appUserRepository.save(new AppUser("Einstein","Albert", BigDecimal.valueOf(20000)));
-        appUserRepository.save(new AppUser("Einstein","David", BigDecimal.valueOf(20000)));
-        appUserRepository.save(new AppUser("Ange Gardien","Joséphine", BigDecimal.valueOf(100000)));
-        appUserRepository.save(new AppUser("Lopez","Francisco", BigDecimal.valueOf(20000)));
-        appUserRepository.save(new AppUser("Pinto","Bruno", BigDecimal.valueOf(214748000)));
         appUserRepository.save(user);
         appUserRepository.save(user1);
         Item item1 = new Item("Iphone 12", subCat.get(0),user, "Latest Apple smartphone","Smartphone1.png", BigDecimal.valueOf(999.99));

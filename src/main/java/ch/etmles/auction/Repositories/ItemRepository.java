@@ -10,10 +10,10 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findByCategory_Id(long categoryId);
 
-    @Query("SELECT i FROM Item i WHERE i.id IN (SELECT b.item.id FROM Bid b WHERE b.appUser.id = :buyerId)")
+    @Query("SELECT i FROM Item i WHERE i.id IN (SELECT b.item.id FROM Bid b WHERE b.appUser.id = :buyerId) and i.id IN (SELECT a.item.id FROM Auction a where a.isActive = true)")
     List<Item> findItemsByBuyer(long buyerId);
 
-    @Query("SELECT i FROM Item i WHERE i.appUser.id = :sellerId")
+    @Query("SELECT i FROM Item i WHERE i.appUser.id = :sellerId and i.id in (SELECT a.item.id FROM Auction a where a.isActive = true)")
     List<Item> findItemsBySeller(long sellerId);
 
     @Query("SELECT i FROM Item i WHERE i.id IN " +
