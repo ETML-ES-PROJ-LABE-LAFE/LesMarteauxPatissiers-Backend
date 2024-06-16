@@ -17,6 +17,7 @@ This is a Spring Boot-based Auction Application. The application allows users to
 - Java 17 or higher
 - Spring Boot 3.2.4
 - Spring Data JPA
+- H2 Database (for development)
 - Maven 3.6.0 or higher
 - IDE of your choice (IntelliJ IDEA recommended)
 
