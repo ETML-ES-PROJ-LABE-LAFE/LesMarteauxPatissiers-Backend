@@ -74,7 +74,7 @@ public class BidService {
         AppUser appUser = appUserRepository.findById(bidDTO.getAppUserId())
                 .orElseThrow(() -> new AppUserNotFoundException(bidDTO.getAppUserId())) ;
         if (appUser == auction.getItem().getAppUser()) {
-            throw new RuntimeException("You cannot create a bid on your own auction Michel !");
+            throw new BidNotAllowedException();
         }
         if (!(bidDTO.getAmount().compareTo(appUser.getCredit()) > 0)) {
             try {
