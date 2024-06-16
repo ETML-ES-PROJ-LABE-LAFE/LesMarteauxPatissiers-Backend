@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Auction {
@@ -67,6 +68,30 @@ public class Auction {
 
     public void setDesactivationDate(LocalDateTime desactivationDate) {
         this.desactivationDate = desactivationDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Auction auction = (Auction) o;
+        return id == auction.id && isActive == auction.isActive && Objects.equals(item, auction.item) && Objects.equals(bids, auction.bids) && Objects.equals(desactivationDate, auction.desactivationDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, item, bids, isActive, desactivationDate);
+    }
+
+    @Override
+    public String toString() {
+        return "Auction{" +
+                "id=" + id +
+                ", item=" + item +
+                ", bids=" + bids +
+                ", isActive=" + isActive +
+                ", desactivationDate=" + desactivationDate +
+                '}';
     }
 }
 

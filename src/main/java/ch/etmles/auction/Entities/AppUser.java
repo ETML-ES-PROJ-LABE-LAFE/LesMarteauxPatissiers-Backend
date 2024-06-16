@@ -3,6 +3,7 @@ package ch.etmles.auction.Entities;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity
 public class AppUser {
@@ -52,4 +53,26 @@ public class AppUser {
         return credit;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AppUser appUser = (AppUser) o;
+        return id == appUser.id && Objects.equals(nom, appUser.nom) && Objects.equals(prenom, appUser.prenom) && Objects.equals(credit, appUser.credit);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nom, prenom, credit);
+    }
+
+    @Override
+    public String toString() {
+        return "AppUser{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", credit=" + credit +
+                '}';
+    }
 }

@@ -1,12 +1,8 @@
 package ch.etmles.auction.Controllers;
 
 import ch.etmles.auction.DTOs.AppUserDTO;
-import ch.etmles.auction.DTOs.AuctionDTO;
 import ch.etmles.auction.DTOs.ItemDTO;
-import ch.etmles.auction.Entities.Auction;
-import ch.etmles.auction.Mappers.ItemMapper;
 import ch.etmles.auction.Services.AppUserService;
-import ch.etmles.auction.Services.AuctionService;
 import ch.etmles.auction.Services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,14 +40,27 @@ public class AppUserController {
     }
 
     @GetMapping("/{id}/purchases")
-    public ResponseEntity<List<ItemDTO>> getSoldAuctionByUserId(@PathVariable Long id) {
+    public ResponseEntity<List<ItemDTO>> getPurchasesByUserId(@PathVariable Long id) {
         List<ItemDTO> items = itemService.findItemsByBuyer(id);
         return !items.isEmpty() ? ResponseEntity.ok(items) : ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}/sales")
-    public ResponseEntity<List<ItemDTO>> getBoughtAuctionByUserId(@PathVariable Long id) {
+    public ResponseEntity<List<ItemDTO>> getSalesByUserId(@PathVariable Long id) {
         List<ItemDTO> items = itemService.findItemsBySeller(id);
         return !items.isEmpty() ? ResponseEntity.ok(items) : ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{id}/won")
+    public ResponseEntity<List<ItemDTO>> getWonAuctionByUserId(@PathVariable Long id) {
+        List<ItemDTO> items = itemService.findItemsWonByUser(id);
+        return !items.isEmpty() ? ResponseEntity.ok(items) : ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/sold")
+    public ResponseEntity<List<ItemDTO>> getSoldAuctionByUserId(@PathVariable Long id) {
+        List<ItemDTO> items = itemService.findItemsSoldByUser(id);
+        return !items.isEmpty() ? ResponseEntity.ok(items) : ResponseEntity.noContent().build();
+    }
+
 }

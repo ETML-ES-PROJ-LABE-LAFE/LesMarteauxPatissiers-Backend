@@ -88,7 +88,6 @@ public class Item {
         return category;
     }
 
-    // Utiliser un service pour obtenir l'objet Category à partir de l'identifiant
     public void setCategory(Category category) {
         this.category = category;
     }

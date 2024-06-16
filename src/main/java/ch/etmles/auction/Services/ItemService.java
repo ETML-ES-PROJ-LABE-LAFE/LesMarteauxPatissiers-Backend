@@ -85,4 +85,15 @@ public class ItemService {
         List<Item> items = itemRepository.findItemsBySeller(sellerId);
         return items.stream().map(itemMapper::convertToDTO).collect(Collectors.toList());
     }
+
+    public List<ItemDTO> findItemsWonByUser(long userId){
+        List<Item> items = itemRepository.findItemsWonByUser(userId);
+        return items.stream().map(itemMapper::convertToDTO).collect(Collectors.toList());
+    }
+
+    public List<ItemDTO> findItemsSoldByUser(long userId){
+        List<Item> items = itemRepository.findItemsSoldByUser(userId);
+        return items.stream().map(itemMapper::convertToDTO).collect(Collectors.toList());
+    }
+
 }

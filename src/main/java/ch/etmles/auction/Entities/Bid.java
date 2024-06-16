@@ -3,6 +3,7 @@ package ch.etmles.auction.Entities;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 public class Bid {
@@ -87,4 +88,28 @@ public class Bid {
         this.bidTime = bidTime;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Bid bid = (Bid) o;
+        return id == bid.id && Objects.equals(item, bid.item) && Objects.equals(appUser, bid.appUser) && Objects.equals(auction, bid.auction) && Objects.equals(amount, bid.amount) && Objects.equals(bidTime, bid.bidTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, item, appUser, auction, amount, bidTime);
+    }
+
+    @Override
+    public String toString() {
+        return "Bid{" +
+                "id=" + id +
+                ", item=" + item +
+                ", appUser=" + appUser +
+                ", auction=" + auction +
+                ", amount=" + amount +
+                ", bidTime=" + bidTime +
+                '}';
+    }
 }

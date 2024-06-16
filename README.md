@@ -10,21 +10,13 @@ This is a Spring Boot-based Auction Application. The application allows users to
 - CORS configuration for frontend integration
 - Exception handling for robust API
 
-## Technologies Used
-
-- Java 17
-- Spring Boot 3.2.4
-- Spring Data JPA
-- Hibernate
-- H2 Database (for development)
-- Maven
-- Lombok (optional for reducing boilerplate code)
-
 ## Getting Started
 
 ### Prerequisites
 
 - Java 17 or higher
+- Spring Boot 3.2.4
+- Spring Data JPA
 - Maven 3.6.0 or higher
 - IDE of your choice (IntelliJ IDEA recommended)
 
@@ -32,11 +24,11 @@ This is a Spring Boot-based Auction Application. The application allows users to
 
 1. Clone the repository
     ```bash
-    git clone https://github.com/ETML-ES-PROJ-LABE-LAFE/LesMarteauxPatissiers-Backend.git
-    cd LesMarteauxPatissiers-Backend
+    git clone https://github.com/{repository}
+    cd {repository}
     ```
 
-2. Build the project using Maven
+2. Build and resolve dependencies using Maven  
     ```bash
     mvn clean install
     ```
@@ -50,12 +42,8 @@ The application will start on `http://localhost:8080`.
 
 ### API Endpoints
 
-If you run the applicationy, you can use swagger to check API Endpoints on the link [HERE](http://localhost:8080/swagger-ui.html)
-Otherwise you can see them [HERE](https://github.com/ETML-ES-PROJ-LABE-LAFE/LesMarteauxPatissiers-Backend/wiki/API-END-POINTS) to see the end points 
-
-### CORS Configuration
-
-The application is configured to allow CORS requests from `http://localhost:8081`. You can modify this in the `CorsConfig` class or by using the `@CrossOrigin` annotation in your controllers.
+If you run the application, you can use swagger to check API Endpoints on the link [HERE](http://localhost:8080/swagger-ui.html).\
+Otherwise, you can see them [HERE](https://github.com/ETML-ES-PROJ-LABE-LAFE/LesMarteauxPatissiers-Backend/wiki/API-END-POINTS).
 
 ### Exception Handling
 
@@ -67,12 +55,51 @@ The application uses H2 in-memory database for development. The database schema 
 
 ### Running Tests
 
-To run tests, use the following command:
+To run tests, use the following commands :
 ```bash
-    mvn test
+    mvn test        //to run all tests
+```
+```bash
+    mvn -Dtest=TestClassName#testMethodName test        //to run a specific test. If you want to run all the tests in a specific class, you can omit the #testMethodName 
 ```
 
-### Contributing
+## Directory Structure
+
+```
+├───html-docs-diagrams                       // Class Diagramms to open on a browser or edit with StarUML
+│   ├───assets
+│   │   ├───css
+│   │   ├───icon-font
+│   │   ├───img
+│   │   └───js
+│   ├───contents
+│   └───diagrams
+├───MCD_MLD                                  // Database Diagramms
+└──src                                       // Source code 
+    ├───main
+    │   ├───java
+    │   │   └───ch
+    │   │       └───etmles
+    │   │           └───auction
+    │   │               ├───Config
+    │   │               ├───Controllers
+    │   │               ├───DTOs
+    │   │               ├───Entities
+    │   │               ├───Exceptions
+    │   │               ├───Mappers
+    │   │               ├───Repositories
+    │   │               └───Services
+    │   └───resources
+    └───test                                 
+       └───java
+           └───ch
+              └───etmles
+                   └───auction               // Test classes
+
+```
+
+
+## Contributing
 
 We welcome contributions to improve this project! If you would like to contribute, please follow these steps :
 
@@ -106,5 +133,14 @@ We welcome contributions to improve this project! If you would like to contribut
 
 Please ensure your code adheres to our coding standards and includes appropriate tests.
 
+## Licences
+The Auction project is released under the ETML-ES License. You are free to use, modify, and distribute the code for both commercial and non-commercial purposes.
 
+## Contact
 
+### Project Developers 
+evgueni.ignatiev@eduvaud.ch\
+bruno.silva@eduvaud.ch\
+dylan.lopez@eduvaud.ch
+
+Feel free to contact us for any questions.
