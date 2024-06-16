@@ -24,7 +24,7 @@ public class BidController {
     @GetMapping("/{id}")
     public ResponseEntity<BidDTO> getBidById(@PathVariable long id) {
         BidDTO bidDTO = bidService.getBidById(id);
-        return bidDTO != null ? ResponseEntity.ok(bidDTO) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok(bidDTO);
     }
 
     @PostMapping

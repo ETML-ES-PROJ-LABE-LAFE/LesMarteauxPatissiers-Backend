@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -22,6 +23,55 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CategoryNotFoundException.class)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     String categoryNotFoundHandler(CategoryNotFoundException ex) {
+        return ex.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(AuctionNotFoundException.class)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    String auctionNotFoundHandler(AuctionNotFoundException ex) {
+        return ex.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(AuctionNotActiveException.class)
+    @ResponseStatus(HttpStatus.NOT_MODIFIED)
+    String auctionNotActiveHandler(AuctionNotActiveException ex) {
+        return ex.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(AuctionAlreadyActiveException.class)
+    @ResponseStatus(HttpStatus.NOT_MODIFIED)
+    String auctionAlreadyActiveHandler(AuctionAlreadyActiveException ex) {
+        return ex.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(BidTooLowException.class)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    String bidTooLowHandler(BidTooLowException ex) {
+        return ex.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(AppUserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    String appUserNotFoundHandler(AppUserNotFoundException ex) {
+        return ex.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(InsufficientCreditException.class)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    String insufficientCreditHandler(InsufficientCreditException ex) {
+        return ex.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(ItemMismatchException.class)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    String itemMismatchHandler(ItemMismatchException ex) {
         return ex.getMessage();
     }
 

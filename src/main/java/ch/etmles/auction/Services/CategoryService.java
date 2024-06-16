@@ -23,7 +23,6 @@ public class CategoryService {
                 .orElseThrow(() -> new CategoryNotFoundException(id));
     }
 
-
     public List<Category> getSubCategories(Long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException(id));

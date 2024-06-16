@@ -37,9 +37,6 @@ public class CategoryController {
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Long id) {
         Category category = categoryService.getCategoryById(id);
-        if (category == null) {
-            throw new CategoryNotFoundException(id);
-        }
         return ResponseEntity.ok(categoryMapper.convertToDTO(category)) ;
     }
 
@@ -49,13 +46,13 @@ public class CategoryController {
         List<CategoryDTO> subCategoryDTOs = subCategories.stream()
                 .map(categoryMapper::convertToDTO)
                 .collect(Collectors.toList());
-        return !subCategories.isEmpty() ? ResponseEntity.ok(subCategoryDTOs) : ResponseEntity.notFound().build();
+        return !subCategories.isEmpty() ? ResponseEntity.ok(subCategoryDTOs) : ResponseEntity.noContent().build();
     }
 
     //récupération des items par catégorie
     @GetMapping("/{id}/items")
     public ResponseEntity<List<ItemDTO>> getItemsByCategoryId(@PathVariable Long id) {
         List<ItemDTO> items = itemService.getItemsBySubCategoryId(id);
-        return !items.isEmpty() ? ResponseEntity.ok(items) : ResponseEntity.notFound().build();
+        return !items.isEmpty() ? ResponseEntity.ok(items) : ResponseEntity.noContent().build();
     }
 }

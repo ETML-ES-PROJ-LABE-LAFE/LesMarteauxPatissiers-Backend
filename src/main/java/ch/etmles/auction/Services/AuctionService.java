@@ -1,7 +1,14 @@
 package ch.etmles.auction.Services;
 
+import ch.etmles.auction.Entities.AppUser;
 import ch.etmles.auction.Entities.Auction;
+import ch.etmles.auction.Entities.Bid;
 import ch.etmles.auction.Entities.Item;
+import ch.etmles.auction.Exceptions.AuctionAlreadyActiveException;
+import ch.etmles.auction.Exceptions.AuctionNotActiveException;
+import ch.etmles.auction.Exceptions.AuctionNotFoundException;
+import ch.etmles.auction.Exceptions.ItemNotFoundException;
+import ch.etmles.auction.Repositories.AppUserRepository;
 import ch.etmles.auction.Repositories.AuctionRepository;
 import ch.etmles.auction.Repositories.ItemRepository;
 import ch.etmles.auction.DTOs.AuctionDTO;
@@ -11,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +30,9 @@ public class AuctionService {
     private AuctionMapper auctionMapper;
 
     @Autowired
+    private AppUserRepository appUserRepository;
+
+    @Autowired
     private ItemRepository itemRepository;
 
     public List<AuctionDTO> getAllAuctions() {
@@ -32,8 +41,8 @@ public class AuctionService {
     }
 
     public AuctionDTO getAuctionById(long id) {
-        Optional<Auction> auction = auctionRepository.findById(id);
-        return auction.map(auctionMapper::toDto).orElse(null);
+        Auction auction = auctionRepository.findById(id).orElseThrow(()-> new AuctionNotFoundException(id));
+        return auctionMapper.toDto(auction);
     }
 
     public AuctionDTO createAuction(AuctionDTO auctionDTO) {
@@ -41,12 +50,12 @@ public class AuctionService {
         Auction auction = auctionMapper.toEntity(auctionDTO);
 
         Item item = itemRepository.findById(auctionDTO.getItemId())
-                .orElseThrow(() -> new RuntimeException("Item not found with id: " + auctionDTO.getItemId()));
+                .orElseThrow(() -> new ItemNotFoundException(auctionDTO.getItemId())) ;
 
         //control if there is an active auction for the current item
         Auction existingActiveAuctions = auctionRepository.findActiveAuctionByItemId(auctionDTO.getItemId());
         if ((existingActiveAuctions != null)) {
-            throw new RuntimeException("An auction for this item is already active with id : " + existingActiveAuctions.getId());
+            throw new AuctionAlreadyActiveException(existingActiveAuctions.getId());
         }
 
         auction.setItem(item);
@@ -57,9 +66,18 @@ public class AuctionService {
 
     public void deactivateAuction(long id) {
         Auction auction = auctionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Auction not found with id: " + id));
+                .orElseThrow(() -> new AuctionNotFoundException(id));
+        if (!auction.isActive()) {
+            throw new AuctionNotActiveException(auction.getId());
+        }
         auction.setActive(false);
         auction.setDesactivationDate(LocalDateTime.now());
+        AppUser appUser = auction.getItem().getAppUser();
+        if (!auction.getBids().isEmpty()) {
+            Bid lastBid = auction.getBids().get(auction.getBids().size() - 1);
+            appUser.setCredit(appUser.getCredit().add(lastBid.getAmount()));
+            appUserRepository.save(appUser);
+        }
         Auction updatedAuction = auctionRepository.save(auction);
         auctionMapper.toDto(updatedAuction);
     }

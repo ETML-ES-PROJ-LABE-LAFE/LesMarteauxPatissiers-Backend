@@ -27,11 +27,7 @@ public class AppUserController {
     @GetMapping("/{id}")
     public ResponseEntity<AppUserDTO> getUserById(@PathVariable Long id) {
         AppUserDTO userDTO = appUserService.getUserById(id);
-        if (userDTO != null) {
-            return ResponseEntity.ok(userDTO);
-        } else {
-            return ResponseEntity.noContent().build();
-        }
+        return ResponseEntity.ok(userDTO);
     }
 
     @PostMapping

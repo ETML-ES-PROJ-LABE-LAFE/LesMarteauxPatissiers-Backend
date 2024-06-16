@@ -3,6 +3,7 @@ package ch.etmles.auction.Services;
 import ch.etmles.auction.DTOs.ItemDTO;
 import ch.etmles.auction.Entities.AppUser;
 import ch.etmles.auction.Entities.Item;
+import ch.etmles.auction.Exceptions.AppUserNotFoundException;
 import ch.etmles.auction.Exceptions.ItemNotFoundException;
 import ch.etmles.auction.Mappers.ItemMapper;
 import ch.etmles.auction.Repositories.AppUserRepository;
@@ -50,14 +51,11 @@ public class ItemService {
         item.setImage(itemDTO.getImageName());
         item.setInitialPrice(itemDTO.getInitialPrice());
 
-        Optional<AppUser> appUserOptional = appUserRepository.findById(itemDTO.getAppUserId());
-        if (appUserOptional.isPresent()) {
-            item.setAppUser(appUserOptional.get());
-        } else {
-            throw new RuntimeException("AppUser not found with id: " + itemDTO.getAppUserId());
-        }
+        AppUser appUser = appUserRepository.findById(itemDTO.getAppUserId()).orElseThrow(()-> new AppUserNotFoundException(itemDTO.getAppUserId()));
+        item.setAppUser(appUser);
 
         item.setCategory(itemMapper.convertToEntity(itemDTO).getCategory());
+        
         Item savedItem = itemRepository.save(item);
         return itemMapper.convertToDTO(savedItem);
     }

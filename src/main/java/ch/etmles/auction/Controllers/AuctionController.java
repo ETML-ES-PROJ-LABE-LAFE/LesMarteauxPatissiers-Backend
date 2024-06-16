@@ -28,11 +28,7 @@ public class AuctionController {
     @GetMapping("/{id}")
     public ResponseEntity<AuctionDTO> getAuctionById(@PathVariable long id) {
         AuctionDTO auctionDTO = auctionService.getAuctionById(id);
-        if (auctionDTO != null) {
-            return ResponseEntity.ok(auctionDTO);
-        } else {
-            return ResponseEntity.noContent().build();
-        }
+        return ResponseEntity.ok(auctionDTO);
     }
 
     @PostMapping
@@ -40,14 +36,14 @@ public class AuctionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(auctionService.createAuction(auctionDTO));
     }
 
-    //endpoint to soft delete auction -> no response
+    //endpoint to soft delete auction
     @PutMapping("/{id}/desactivate")
     public ResponseEntity<AuctionDTO> deactivateAuction(@PathVariable long id) {
         try {
             auctionService.deactivateAuction(id);
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok().build();
         }
     }
 }
