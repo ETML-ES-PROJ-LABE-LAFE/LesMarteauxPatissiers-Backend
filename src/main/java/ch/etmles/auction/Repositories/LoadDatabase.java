@@ -3,6 +3,7 @@ package ch.etmles.auction.Repositories;
 import ch.etmles.auction.Entities.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,8 @@ public class LoadDatabase {
     private final AppUserRepository appUserRepository;
     private final AuctionRepository auctionRepository;
     private final BidRepository bidRepository;
+    @Value("${s3.bucket.url}")
+    private String s3BucketUrl;
 
     public LoadDatabase(AppUserRepository appUserRepository, AuctionRepository auctionRepository, BidRepository bidRepository) {
         this.appUserRepository = appUserRepository;
@@ -94,20 +97,20 @@ public class LoadDatabase {
         AppUser user1 = new AppUser("Toto","Giovanni",BigDecimal.valueOf(8000));
         appUserRepository.save(user);
         appUserRepository.save(user1);
-        Item item1 = new Item("Iphone 12", subCat.get(0),user, "Latest Apple smartphone","Smartphone1.png", BigDecimal.valueOf(999.99));
-        Item item2 = new Item("Iphone 13", subCat.get(0),user1, "Latest Apple smartphone","Smartphone2.png", BigDecimal.valueOf(1099.99));
+        Item item1 = new Item("Iphone 12", subCat.get(0),user, "Latest Apple smartphone",s3BucketUrl+"Smartphone1.png", BigDecimal.valueOf(999.99));
+        Item item2 = new Item("Iphone 13", subCat.get(0),user1, "Latest Apple smartphone",s3BucketUrl+"Smartphone2.png", BigDecimal.valueOf(1099.99));
         itemRepository.save(item1);
         itemRepository.save(item2);
-        itemRepository.save(new Item("Iphone 13", subCat.get(0),user1, "Latest Apple smartphone","Smartphone3.png", BigDecimal.valueOf(1299.99)));
-        itemRepository.save(new Item("Iphone 19 Pro Plus", subCat.get(0),user, "Latest Apple smartphone","Smartphone4.png", BigDecimal.valueOf(2999.99)));
-        itemRepository.save(new Item("MacBook Pro 13' pouces", subCat.get(1),user, "High-end Apple laptop","Computer1.png", BigDecimal.valueOf(1999.99)));
+        itemRepository.save(new Item("Iphone 13", subCat.get(0),user1, "Latest Apple smartphone",s3BucketUrl+"Smartphone3.png", BigDecimal.valueOf(1299.99)));
+        itemRepository.save(new Item("Iphone 19 Pro Plus", subCat.get(0),user, "Latest Apple smartphone",s3BucketUrl+"Smartphone4.png", BigDecimal.valueOf(2999.99)));
+        itemRepository.save(new Item("MacBook Pro 13' pouces", subCat.get(1),user, "High-end Apple laptop",s3BucketUrl+"Computer1.png", BigDecimal.valueOf(1999.99)));
 
-        itemRepository.save(new Item("MacBook Pro 15' pouces", subCat.get(1),user1, "High-end Apple laptop","Computer2.png", BigDecimal.valueOf(2499.99)));
-        itemRepository.save(new Item("MacBook Pro 17' pouces", subCat.get(1),user, "High-end Apple laptop","Computer3.png", BigDecimal.valueOf(2999.99)));
-        itemRepository.save(new Item("Nikon D3500", subCat.get(2),user1, "Entry-level DSLR camera","Camera1.png", BigDecimal.valueOf(499.99)));
-        itemRepository.save(new Item("Nikon D6500", subCat.get(2),user, "Entry-level DSLR camera","Camera2.png", BigDecimal.valueOf(499.99)));
-        itemRepository.save(new Item("Samsung TV 55\"", subCat.get(3),user, "4K UHD Smart TV","Television1.png", BigDecimal.valueOf(799.99)));
-        itemRepository.save(new Item("USB-C Adapter", subCat.get(4),user1, "Multiport adapter","USB-C-Adaptater.png", BigDecimal.valueOf(29.99)));
+        itemRepository.save(new Item("MacBook Pro 15' pouces", subCat.get(1),user1, "High-end Apple laptop",s3BucketUrl+"Computer2.png", BigDecimal.valueOf(2499.99)));
+        itemRepository.save(new Item("MacBook Pro 17' pouces", subCat.get(1),user, "High-end Apple laptop",s3BucketUrl+"Computer3.png", BigDecimal.valueOf(2999.99)));
+        itemRepository.save(new Item("Nikon D3500", subCat.get(2),user1, "Entry-level DSLR camera",s3BucketUrl+"Camera1.png", BigDecimal.valueOf(499.99)));
+        itemRepository.save(new Item("Nikon D6500", subCat.get(2),user, "Entry-level DSLR camera",s3BucketUrl+"Camera2.png", BigDecimal.valueOf(499.99)));
+        itemRepository.save(new Item("Samsung TV 55\"", subCat.get(3),user, "4K UHD Smart TV",s3BucketUrl+"Television1.png", BigDecimal.valueOf(799.99)));
+        itemRepository.save(new Item("USB-C Adapter", subCat.get(4),user1, "Multiport adapter",s3BucketUrl+"USB-C-Adaptater.png", BigDecimal.valueOf(29.99)));
 
         itemRepository.save(new Item("Ergonomic Chair", subCat.get(5),user1, "Comfortable office chair",null, BigDecimal.valueOf(149.99)));
         itemRepository.save(new Item("Wooden Table", subCat.get(6),user, "Solid wood dining table",null ,BigDecimal.valueOf(299.99)));
