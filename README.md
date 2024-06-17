@@ -17,7 +17,7 @@ This is a Spring Boot-based Auction Application. The application allows users to
 - Java 17 or higher
 - Spring Boot 3.2.4
 - Spring Data JPA
-- H2 Database (for development)
+- H2 and MySQL Database (for development) 
 - Maven 3.6.0 or higher
 - IDE of your choice (IntelliJ IDEA recommended)
 
@@ -50,9 +50,17 @@ Otherwise, you can see them [HERE](https://github.com/ETML-ES-PROJ-LABE-LAFE/Les
 
 Global exception handling is provided using `@ControllerAdvice` and custom exception classes to handle not found and other exceptions gracefully.
 
+### CORS Configuration
+
+The application is configured to allow CORS requests from `http://localhost:8081`. You can modify this in the `application.properties` or by using the `@CrossOrigin` annotation in your controllers.
+
 ### Database
 
-The application uses H2 in-memory database for development. The database schema is automatically created on startup.
+The application uses H2 in-memory database for development. The database schema is automatically created on startup.\
+If you want to have a persistent Database on MySQL you should run this command :
+```bash
+ mvn spring-boot:run -D"spring-boot.run.profiles=dev-mysql"
+```
 
 ### Running Tests
 
@@ -75,7 +83,7 @@ To run tests, use the following commands :
 │   │   └───js
 │   ├───contents
 │   └───diagrams
-├───MCD_MLD                                  // Database Diagramms
+├───Database_Diagrams                                  
 └──src                                       // Source code 
     ├───main
     │   ├───java

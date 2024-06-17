@@ -1,5 +1,6 @@
 package ch.etmles.auction.Config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -11,16 +12,28 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig {
 
+    @Value("${cors.allowedOrigins}")
+    private String allowedOrigins;
+
+    @Value("${cors.allowedMethods}")
+    private String allowedMethods;
+
+    @Value("${cors.allowedHeaders}")
+    private String allowedHeaders;
+
+    @Value("${cors.allowCredentials}")
+    private boolean allowCredentials;
+
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:8081")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
+                        .allowedOrigins(allowedOrigins.split(","))
+                        .allowedMethods(allowedMethods.split(","))
+                        .allowedHeaders(allowedHeaders)
+                        .allowCredentials(allowCredentials);
             }
         };
     }
@@ -29,10 +42,10 @@ public class WebConfig {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:8081");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
+        config.setAllowCredentials(allowCredentials);
+        config.addAllowedOrigin(allowedOrigins);
+        config.addAllowedHeader(allowedHeaders);
+        config.addAllowedMethod(allowedMethods);
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
