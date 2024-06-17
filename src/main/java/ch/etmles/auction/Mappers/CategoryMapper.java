@@ -2,8 +2,6 @@ package ch.etmles.auction.Mappers;
 
 import ch.etmles.auction.DTOs.CategoryDTO;
 import ch.etmles.auction.Entities.Category;
-import ch.etmles.auction.Services.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,9 +9,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class CategoryMapper {
-
-    @Autowired
-    private CategoryService categoryService;
 
     public CategoryDTO convertToDTO(Category category) {
         CategoryDTO categoryDTO = new CategoryDTO();
@@ -29,13 +24,11 @@ public class CategoryMapper {
         return categoryDTO;
     }
 
-    public Category convertToEntity(CategoryDTO categoryDTO) {
+    public Category convertToEntity(CategoryDTO categoryDTO, Category parentCategory) {
         Category category = new Category();
         category.setId(categoryDTO.getId());
         category.setName(categoryDTO.getName());
-        if (categoryDTO.getParentCategoryId() != null) {
-            category.setParentCategory(categoryService.getCategoryById(categoryDTO.getParentCategoryId()));
-        }
+        category.setParentCategory(parentCategory);
         return category;
     }
 }

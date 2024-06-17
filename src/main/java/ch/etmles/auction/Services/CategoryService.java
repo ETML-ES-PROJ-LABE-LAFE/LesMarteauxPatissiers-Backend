@@ -1,12 +1,15 @@
 package ch.etmles.auction.Services;
 
+import ch.etmles.auction.DTOs.CategoryDTO;
 import ch.etmles.auction.Entities.Category;
 import ch.etmles.auction.Exceptions.CategoryNotFoundException;
+import ch.etmles.auction.Mappers.CategoryMapper;
 import ch.etmles.auction.Repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
@@ -14,19 +17,26 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    @Autowired
+    private CategoryMapper categoryMapper;
+
+    public List<CategoryDTO> getAllCategories() {
+        List<Category> categories = categoryRepository.findAll();
+        return categories.stream().map(categoryMapper::convertToDTO).collect(Collectors.toList());
     }
 
-    public Category getCategoryById(Long id) {
-        return categoryRepository.findById(id)
-                .orElseThrow(() -> new CategoryNotFoundException(id));
-    }
-
-    public List<Category> getSubCategories(Long id) {
+    public CategoryDTO getCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException(id));
-        return category.getSubCategories();
+        return categoryMapper.convertToDTO(category);
     }
 
+    public List<CategoryDTO> getSubCategories(Long id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException(id));
+        List<Category> subCategories = category.getSubCategories();
+        return subCategories.stream()
+                .map(categoryMapper::convertToDTO)
+                .collect(Collectors.toList());
+    }
 }

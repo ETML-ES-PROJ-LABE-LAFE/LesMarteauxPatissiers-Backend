@@ -14,63 +14,63 @@ public class GlobalExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(ItemNotFoundException.class)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     String itemNotFoundHandler(ItemNotFoundException ex) {
         return ex.getMessage();
     }
 
     @ResponseBody
     @ExceptionHandler(CategoryNotFoundException.class)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     String categoryNotFoundHandler(CategoryNotFoundException ex) {
         return ex.getMessage();
     }
 
     @ResponseBody
     @ExceptionHandler(AuctionNotFoundException.class)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     String auctionNotFoundHandler(AuctionNotFoundException ex) {
         return ex.getMessage();
     }
 
     @ResponseBody
     @ExceptionHandler(AuctionNotActiveException.class)
-    @ResponseStatus(HttpStatus.NOT_MODIFIED)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     String auctionNotActiveHandler(AuctionNotActiveException ex) {
         return ex.getMessage();
     }
 
     @ResponseBody
     @ExceptionHandler(AuctionAlreadyActiveException.class)
-    @ResponseStatus(HttpStatus.NOT_MODIFIED)
+    @ResponseStatus(HttpStatus.CONFLICT)
     String auctionAlreadyActiveHandler(AuctionAlreadyActiveException ex) {
         return ex.getMessage();
     }
 
     @ResponseBody
     @ExceptionHandler(BidTooLowException.class)
-    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     String bidTooLowHandler(BidTooLowException ex) {
         return ex.getMessage();
     }
 
     @ResponseBody
     @ExceptionHandler(AppUserNotFoundException.class)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     String appUserNotFoundHandler(AppUserNotFoundException ex) {
         return ex.getMessage();
     }
 
     @ResponseBody
     @ExceptionHandler(InsufficientCreditException.class)
-    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     String insufficientCreditHandler(InsufficientCreditException ex) {
         return ex.getMessage();
     }
 
     @ResponseBody
     @ExceptionHandler(ItemMismatchException.class)
-    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     String itemMismatchHandler(ItemMismatchException ex) {
         return ex.getMessage();
     }

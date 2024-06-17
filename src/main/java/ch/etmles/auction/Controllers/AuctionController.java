@@ -39,12 +39,8 @@ public class AuctionController {
     //endpoint to soft delete auction
     @PutMapping("/{id}/desactivate")
     public ResponseEntity<AuctionDTO> deactivateAuction(@PathVariable long id) {
-        try {
-            auctionService.deactivateAuction(id);
-            return ResponseEntity.ok().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.ok().build();
-        }
+        auctionService.deactivateAuction(id);
+        return ResponseEntity.noContent().build();
     }
 }
 

@@ -31,44 +31,50 @@ public class LoadDatabase {
     @Transactional
     CommandLineRunner initDatabase(ItemRepository itemRepository, CategoryRepository categoryRepository, AppUserRepository appUserRepository) {
         return args -> {
-            appUserRepository.save(new AppUser("Einstein","Albert", BigDecimal.valueOf(20000)));
-            appUserRepository.save(new AppUser("Einstein","David", BigDecimal.valueOf(20000)));
-            appUserRepository.save(new AppUser("Ange Gardien","Joséphine", BigDecimal.valueOf(100000)));
-            appUserRepository.save(new AppUser("Lopez","Francisco", BigDecimal.valueOf(20000)));
-            appUserRepository.save(new AppUser("Pinto","Bruno", BigDecimal.valueOf(214748000)));
-
-            Category electronics = new Category("Electronics");
-            Category furniture = new Category("Furniture");
-            Category clothing = new Category("Clothing and Accessories");
-            Category booksMoviesMusic = new Category("Books, Movies, and Music");
-            Category artAntiques = new Category("Art and Antiques");
-            Category sportsLeisure = new Category("Sports and Leisure");
-
-            categoryRepository.save(electronics);
-            categoryRepository.save(furniture);
-            categoryRepository.save(clothing);
-            categoryRepository.save(booksMoviesMusic);
-            categoryRepository.save(artAntiques);
-            categoryRepository.save(sportsLeisure);
-
-            // Creating and assigning sub-categories
-            createAndSaveSubCategories(categoryRepository, electronics, "Smartphones", "Computers", "Cameras", "Televisions", "Accessories");
-            createAndSaveSubCategories(categoryRepository, furniture, "Chairs", "Tables", "Sofas", "Beds", "Storage");
-            createAndSaveSubCategories(categoryRepository, clothing, "Men's Clothing", "Women's Clothing", "Shoes", "Jewelry", "Handbags");
-            createAndSaveSubCategories(categoryRepository, booksMoviesMusic, "Books", "Movies", "Music", "Comics", "Magazines");
-            createAndSaveSubCategories(categoryRepository, artAntiques, "Paintings", "Sculptures", "Antique Furniture", "Collectibles", "Photography");
-            createAndSaveSubCategories(categoryRepository, sportsLeisure, "Sport Equipment", "Sport Clothing", "Camping Gear", "Toys", "Fishing Gear");
-
-            // Fetching all sub-categories
-            List<Category> subCat = new ArrayList<>();
-            List<Category> cat = categoryRepository.findAllWithSubCategories();
-            for (Category c : cat) {
-                subCat.addAll(c.getSubCategories());
+            if (appUserRepository.count() == 0) {
+                log.info("Preloading users...");
+                appUserRepository.save(new AppUser("Einstein", "Albert", BigDecimal.valueOf(20000)));
+                appUserRepository.save(new AppUser("Einstein", "David", BigDecimal.valueOf(20000)));
+                appUserRepository.save(new AppUser("Ange Gardien", "Joséphine", BigDecimal.valueOf(100000)));
+                appUserRepository.save(new AppUser("Lopez", "Francisco", BigDecimal.valueOf(20000)));
+                appUserRepository.save(new AppUser("Pinto", "Bruno", BigDecimal.valueOf(214748000)));
             }
-            //log.info("List of sub-categories: " + subCat);
 
-            // Adding items to the sub-categories
-            addItemsToSubCategories(itemRepository, subCat);
+            if (categoryRepository.count() == 0) {
+                log.info("Preloading categories...");
+                Category electronics = new Category("Electronics");
+                Category furniture = new Category("Furniture");
+                Category clothing = new Category("Clothing and Accessories");
+                Category booksMoviesMusic = new Category("Books, Movies, and Music");
+                Category artAntiques = new Category("Art and Antiques");
+                Category sportsLeisure = new Category("Sports and Leisure");
+
+                categoryRepository.save(electronics);
+                categoryRepository.save(furniture);
+                categoryRepository.save(clothing);
+                categoryRepository.save(booksMoviesMusic);
+                categoryRepository.save(artAntiques);
+                categoryRepository.save(sportsLeisure);
+
+                // Creating and assigning sub-categories
+                createAndSaveSubCategories(categoryRepository, electronics, "Smartphones", "Computers", "Cameras", "Televisions", "Accessories");
+                createAndSaveSubCategories(categoryRepository, furniture, "Chairs", "Tables", "Sofas", "Beds", "Storage");
+                createAndSaveSubCategories(categoryRepository, clothing, "Men's Clothing", "Women's Clothing", "Shoes", "Jewelry", "Handbags");
+                createAndSaveSubCategories(categoryRepository, booksMoviesMusic, "Books", "Movies", "Music", "Comics", "Magazines");
+                createAndSaveSubCategories(categoryRepository, artAntiques, "Paintings", "Sculptures", "Antique Furniture", "Collectibles", "Photography");
+                createAndSaveSubCategories(categoryRepository, sportsLeisure, "Sport Equipment", "Sport Clothing", "Camping Gear", "Toys", "Fishing Gear");
+
+                // Fetching all sub-categories
+                List<Category> subCat = new ArrayList<>();
+                List<Category> cat = categoryRepository.findAllWithSubCategories();
+                for (Category c : cat) {
+                    subCat.addAll(c.getSubCategories());
+                }
+                //log.info("List of sub-categories: " + subCat);
+
+                // Adding items to the sub-categories
+                addItemsToSubCategories(itemRepository, subCat);
+            }
             log.info("Database initialized successfully");
         };
     }
